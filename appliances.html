@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Appliances — Kiaat Technologies Ghana</title>
+<meta name="description" content="Shop refrigerators, air conditioners, washing machines and microwaves at Kiaat Technologies Ghana. Genuine products, warranty included.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="announce">🚚 <b>Free Delivery</b> on orders over ₵999 in Accra &nbsp;|&nbsp; Call us: <b>+233 552 195 047</b></div>
+
+<header id="siteHeader">
+  <div class="container header-inner">
+    <button class="mobile-toggle icon-btn" onclick="toggleMobileNav()"><i class="fa-solid fa-bars"></i></button>
+    <a href="index.html" class="logo">Kiaat<span class="accent">.</span></a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="electronics.html" class="nav-link">Electronics</a>
+      <a href="appliances.html" class="nav-link active">Appliances</a>
+      <a href="deals.html" class="nav-link">Deals</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="icon-btn" onclick="openDrawer('wishlistDrawer')">
+        <i class="fa-regular fa-heart"></i><span class="badge" id="wishCount">0</span>
+      </button>
+      <button class="icon-btn" onclick="openDrawer('cartDrawer')">
+        <i class="fa-solid fa-bag-shopping"></i><span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+    <span class="logo" style="font-size:20px;">Kiaat<span class="accent">.</span></span>
+    <button class="icon-btn" onclick="toggleMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <a href="index.html" onclick="toggleMobileNav()">Home</a>
+  <a href="electronics.html" onclick="toggleMobileNav()">Electronics</a>
+  <a href="appliances.html" onclick="toggleMobileNav()">Appliances</a>
+  <a href="deals.html" onclick="toggleMobileNav()">Deals</a>
+  <a href="contact.html" onclick="toggleMobileNav()">Contact</a>
+</div>
+<div class="overlay" id="mobileNavOverlay" onclick="toggleMobileNav()"></div>
+
+<!-- PAGE HERO -->
+<section class="page-hero" style="background:linear-gradient(135deg,#0F2A1A 0%,#14532D 55%,#16A34A 100%);">
+  <div class="container page-hero-inner">
+    <div>
+      <span class="eyebrow" style="color:#86EFAC;">Browse Appliances</span>
+      <h1 style="color:#fff;font-size:clamp(28px,4vw,48px);margin-bottom:14px;">Home Appliances</h1>
+      <p style="color:#D1FAE5;font-size:16px;max-width:520px;line-height:1.65;">Quality refrigerators, air conditioners, washing machines, and microwaves — energy-efficient, genuine, and built for everyday Ghanaian living.</p>
+      <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+        <a href="#fridges" class="btn btn-primary btn-sm">Refrigerators</a>
+        <a href="#ac" class="btn btn-outline btn-sm">Air Conditioners</a>
+        <a href="#washing" class="btn btn-outline btn-sm">Washing Machines</a>
+        <a href="#microwave" class="btn btn-outline btn-sm">Microwaves</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+      <div style="text-align:center;color:#fff;"><div style="font-size:32px;font-weight:800;font-family:'Poppins',sans-serif;">286+</div><div style="font-size:13px;color:#A7F3D0;">Products</div></div>
+      <div style="text-align:center;color:#fff;"><div style="font-size:32px;font-weight:800;font-family:'Poppins',sans-serif;">10yr</div><div style="font-size:13px;color:#A7F3D0;">Compressor Warranty</div></div>
+      <div style="text-align:center;color:#fff;"><div style="font-size:32px;font-weight:800;font-family:'Poppins',sans-serif;">Free</div><div style="font-size:13px;color:#A7F3D0;">Delivery over ₵999</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS STRIP -->
+<div style="background:#fff;border-bottom:1px solid var(--border);padding:20px 0;">
+  <div class="container">
+    <div class="why-strip">
+      <div class="why-strip-item" style="color:var(--text)"><i class="fa-solid fa-leaf" style="color:#16A34A;"></i><div><strong>Energy Efficient</strong><span>Save on electricity bills</span></div></div>
+      <div class="why-strip-item" style="color:var(--text)"><i class="fa-solid fa-shield-halved" style="color:#2563EB;"></i><div><strong>10-Year Compressor Warranty</strong><span>On select LG &amp; Samsung models</span></div></div>
+      <div class="why-strip-item" style="color:var(--text)"><i class="fa-solid fa-tools" style="color:var(--orange);"></i><div><strong>Installation Support</strong><span>Available on AC units</span></div></div>
+      <div class="why-strip-item" style="color:var(--text)"><i class="fa-solid fa-truck-fast" style="color:#16A34A;"></i><div><strong>Nationwide Delivery</strong><span>All 16 regions of Ghana</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="section-pad bg-soft">
+  <div class="container">
+
+    <!-- Refrigerators -->
+    <div class="section-head reveal" id="fridges">
+      <span class="eyebrow">Refrigerators</span>
+      <h2 class="section-title">Keep Food Fresh Longer</h2>
+      <p class="section-sub">From compact single-door units to spacious double-door fridges — with smart inverter technology built to handle Ghana's power conditions.</p>
+    </div>
+    <div class="prod-grid" id="fridgesGrid"></div>
+
+    <!-- Air Conditioners -->
+    <div class="section-head reveal" style="margin-top:72px;" id="ac">
+      <span class="eyebrow">Air Conditioners</span>
+      <h2 class="section-title">Stay Cool Year-Round</h2>
+      <p class="section-sub">Energy-saving split and window AC units ideal for bedrooms, living rooms, and offices across Ghana.</p>
+    </div>
+    <div class="prod-grid" id="acGrid"></div>
+
+    <!-- Washing Machines -->
+    <div class="section-head reveal" style="margin-top:72px;" id="washing">
+      <span class="eyebrow">Washing Machines</span>
+      <h2 class="section-title">Effortless Laundry Day</h2>
+      <p class="section-sub">Front and top-load washing machines with large capacities and multiple wash programs for every fabric type.</p>
+    </div>
+    <div class="prod-grid" id="washingGrid"></div>
+
+    <!-- Microwaves -->
+    <div class="section-head reveal" style="margin-top:72px;" id="microwave">
+      <span class="eyebrow">Microwaves</span>
+      <h2 class="section-title">Quick &amp; Convenient Cooking</h2>
+      <p class="section-sub">Compact, digital microwave ovens for reheating, defrosting, and everyday cooking needs.</p>
+    </div>
+    <div class="prod-grid" id="microwaveGrid"></div>
+
+  </div>
+</section>
+
+<!-- BUYING GUIDE BANNER -->
+<section style="background:linear-gradient(120deg,#0F172A,#1E3A8A);padding:64px 0;color:#fff;">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+    <div>
+      <span class="eyebrow" style="color:#93C5FD;">Expert Advice</span>
+      <h2 style="font-size:clamp(22px,3vw,36px);margin-bottom:14px;color:#fff;">Not sure which appliance to buy?</h2>
+      <p style="color:#CBD5E1;font-size:15px;line-height:1.65;margin-bottom:24px;">Our team can help you choose the right fridge, AC, or washing machine based on your budget, room size, and power situation. Reach us on WhatsApp — we reply fast.</p>
+      <a href="https://wa.me/233552195047?text=Hi,%20I%20need%20help%20choosing%20a%20home%20appliance" class="btn btn-primary" target="_blank"><i class="fa-brands fa-whatsapp"></i> Chat With an Expert</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:20px;">
+        <i class="fa-solid fa-snowflake" style="font-size:24px;color:#60A5FA;margin-bottom:10px;"></i>
+        <div style="font-weight:700;font-size:14px;margin-bottom:6px;">Room Size Matters</div>
+        <div style="font-size:12.5px;color:#94A3B8;line-height:1.5;">We help match AC capacity to your room size for optimal cooling efficiency.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:20px;">
+        <i class="fa-solid fa-bolt" style="font-size:24px;color:#FBBF24;margin-bottom:10px;"></i>
+        <div style="font-weight:700;font-size:14px;margin-bottom:6px;">Power-Friendly Options</div>
+        <div style="font-size:12.5px;color:#94A3B8;line-height:1.5;">Inverter models work better on generators and unstable grid power in Ghana.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:20px;">
+        <i class="fa-solid fa-family" style="font-size:24px;color:#86EFAC;margin-bottom:10px;"></i>
+        <div style="font-weight:700;font-size:14px;margin-bottom:6px;">Family Size Guide</div>
+        <div style="font-size:12.5px;color:#94A3B8;line-height:1.5;">Fridge and washing machine capacity should match your household size.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:20px;">
+        <i class="fa-solid fa-piggy-bank" style="font-size:24px;color:#F9A8D4;margin-bottom:10px;"></i>
+        <div style="font-weight:700;font-size:14px;margin-bottom:6px;">Budget Planning</div>
+        <div style="font-size:12.5px;color:#94A3B8;line-height:1.5;">We have options from entry-level to premium, all with warranty included.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="container">
+    <div class="news-inner">
+      <div class="news-text"><h3>Get deals before everyone else</h3><p>Join our newsletter for early access to appliance sales and new arrivals.</p></div>
+      <form class="news-form" onsubmit="handleNewsletter(event)">
+        <input type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">Kiaat<span class="accent">.</span></a>
+        <span class="tagline" style="display:block;color:var(--orange);font-style:italic;font-size:12px;margin:4px 0 14px;">Strength Meets Innovation</span>
+        <p>Ghana's trusted destination for electronics and home appliances.</p>
+        <div class="footer-social">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Shop</h5><a href="electronics.html">Electronics</a><a href="appliances.html">Appliances</a><a href="deals.html">Deals</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="index.html">Home</a><a href="contact.html">Contact</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h5>Support</h5><a href="#">FAQ</a><a href="#">Returns</a><a href="#">Delivery Info</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="tel:+233552195047">+233 552 195 047</a><a href="mailto:kiaattechnologies@gmail.com">kiaattechnologies@gmail.com</a></div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item"><i class="fa-solid fa-circle-check"></i>Genuine Products</div>
+      <div class="trust-item"><i class="fa-solid fa-truck"></i>Nationwide Delivery</div>
+      <div class="trust-item"><i class="fa-solid fa-lock"></i>Secure Payments</div>
+      <div class="trust-item"><i class="fa-solid fa-rotate-left"></i>7-Day Returns</div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kiaat Technologies. All rights reserved.</span>
+      <div class="legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="fab-stack"><a href="https://wa.me/233552195047" class="fab fab-wa"><i class="fa-brands fa-whatsapp"></i></a></div>
+<button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+<button class="kiaaty-fab" id="kiaatyFab" onclick="toggleKiaaty()"><i class="fa-solid fa-comment-dots"></i><span class="kiaaty-badge">1</span></button>
+<div class="kiaaty-panel" id="kiaatyPanel">
+  <div class="kiaaty-head">
+    <div class="kiaaty-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="kiaaty-head-info"><h5>Kiaaty</h5><span>Online · Replies instantly</span></div>
+    <button class="kiaaty-close" onclick="toggleKiaaty()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="kiaaty-body" id="kiaatyBody"></div>
+  <div class="kiaaty-foot">
+    <div class="kiaaty-input-row">
+      <input type="text" id="kiaatyInput" placeholder="Ask Kiaaty anything..." onkeydown="if(event.key==='Enter')kiaatySend()">
+      <button class="kiaaty-send" onclick="kiaatySend()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+    <div class="kiaaty-foot-tag">Kiaaty gives helpful suggestions, not guaranteed availability.</div>
+  </div>
+</div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h3><i class="fa-solid fa-bag-shopping"></i> Your Cart</h3><button class="drawer-close" onclick="closeDrawer('cartDrawer')"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot"></div>
+</div>
+<div class="drawer" id="wishlistDrawer">
+  <div class="drawer-head"><h3><i class="fa-solid fa-heart"></i> Wishlist</h3><button class="drawer-close" onclick="closeDrawer('wishlistDrawer')"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-body" id="wishBody"></div>
+</div>
+<div class="drawer search-drawer" id="searchDrawer">
+  <div class="search-input-row">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Search products..." oninput="handleSearch(this.value)">
+    <button class="drawer-close" onclick="closeDrawer('searchDrawer')"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body"><div id="searchResults"></div></div>
+</div>
+<div class="overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+<div class="qv-overlay" id="qvOverlay" onclick="if(event.target===this)closeQuickView()">
+  <div class="qv-modal" id="qvModal"></div>
+</div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="shared.js"></script>
+<script>
+document.getElementById('fridgesGrid').innerHTML = [2,17].map(id=>productCard(products.find(p=>p.id===id))).join('');
+document.getElementById('acGrid').innerHTML = [5,18].map(id=>productCard(products.find(p=>p.id===id))).join('');
+document.getElementById('washingGrid').innerHTML = [6].map(id=>productCard(products.find(p=>p.id===id))).join('');
+document.getElementById('microwaveGrid').innerHTML = [16].map(id=>productCard(products.find(p=>p.id===id))).join('');
+</script>
+</body>
+</html>

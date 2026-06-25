@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics & Entertainment — Kiaat Technologies Ghana</title>
+<meta name="description" content="Shop smartphones, laptops, tablets, smart TVs, gaming consoles, sound systems and smart home devices at Kiaat Technologies Ghana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="announce">🚚 <b>Free Delivery</b> on orders over ₵999 in Accra &nbsp;|&nbsp; Call us: <b>+233 552 195 047</b></div>
+
+<header id="siteHeader">
+  <div class="container header-inner">
+    <button class="mobile-toggle icon-btn" onclick="toggleMobileNav()"><i class="fa-solid fa-bars"></i></button>
+    <a href="index.html" class="logo">Kiaat<span class="accent">.</span></a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="electronics.html" class="nav-link active">Electronics</a>
+      <a href="appliances.html" class="nav-link">Appliances</a>
+      <a href="deals.html" class="nav-link">Deals</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="icon-btn" onclick="openDrawer('wishlistDrawer')">
+        <i class="fa-regular fa-heart"></i><span class="badge" id="wishCount">0</span>
+      </button>
+      <button class="icon-btn" onclick="openDrawer('cartDrawer')">
+        <i class="fa-solid fa-bag-shopping"></i><span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+    <span class="logo" style="font-size:20px;">Kiaat<span class="accent">.</span></span>
+    <button class="icon-btn" onclick="toggleMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <a href="index.html" onclick="toggleMobileNav()">Home</a>
+  <a href="electronics.html" onclick="toggleMobileNav()">Electronics</a>
+  <a href="appliances.html" onclick="toggleMobileNav()">Appliances</a>
+  <a href="deals.html" onclick="toggleMobileNav()">Deals</a>
+  <a href="contact.html" onclick="toggleMobileNav()">Contact</a>
+</div>
+<div class="overlay" id="mobileNavOverlay" onclick="toggleMobileNav()"></div>
+
+<!-- PAGE HERO -->
+<section class="page-hero" style="background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 60%,#2563EB 100%);">
+  <div class="container page-hero-inner">
+    <div>
+      <span class="eyebrow" style="color:#93C5FD;">Browse Categories</span>
+      <h1 style="color:#fff;font-size:clamp(28px,4vw,48px);margin-bottom:14px;">Electronics &amp; Entertainment</h1>
+      <p style="color:#CBD5E1;font-size:16px;max-width:520px;line-height:1.65;">Smartphones, laptops, smart TVs, gaming consoles, sound systems, smart home devices and more — all genuine, all warranted.</p>
+      <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+        <a href="#devices" class="btn btn-primary btn-sm">Devices</a>
+        <a href="#entertainment" class="btn btn-outline btn-sm">Entertainment</a>
+        <a href="#smart" class="btn btn-outline btn-sm">Smart Home</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+      <div style="text-align:center;color:#fff;"><div style="font-size:32px;font-weight:800;font-family:'Poppins',sans-serif;">412+</div><div style="font-size:13px;color:#94A3B8;">Products</div></div>
+      <div style="text-align:center;color:#fff;"><div style="font-size:32px;font-weight:800;font-family:'Poppins',sans-serif;">20+</div><div style="font-size:13px;color:#94A3B8;">Top Brands</div></div>
+      <div style="text-align:center;color:#fff;"><div style="font-size:32px;font-weight:800;font-family:'Poppins',sans-serif;">4.8★</div><div style="font-size:13px;color:#94A3B8;">Avg Rating</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUB-CATEGORY TABS -->
+<section class="section-pad bg-soft" id="devices">
+  <div class="container">
+    <!-- Devices -->
+    <div class="section-head reveal">
+      <span class="eyebrow">Devices</span>
+      <h2 class="section-title">Phones, Laptops &amp; Tablets</h2>
+      <p class="section-sub">The latest smartphones, powerful laptops, and versatile tablets from the world's leading brands.</p>
+    </div>
+    <div class="prod-grid" id="devicesGrid"></div>
+
+    <!-- Entertainment -->
+    <div class="section-head reveal" style="margin-top:72px;" id="entertainment">
+      <span class="eyebrow">Entertainment</span>
+      <h2 class="section-title">TVs, Sound &amp; Gaming</h2>
+      <p class="section-sub">Smart TVs with brilliant 4K displays, powerful sound systems, and the latest gaming consoles.</p>
+    </div>
+    <div class="prod-grid" id="entertainmentGrid"></div>
+
+    <!-- Accessories -->
+    <div class="section-head reveal" style="margin-top:72px;">
+      <span class="eyebrow">Accessories</span>
+      <h2 class="section-title">Earbuds &amp; More</h2>
+      <p class="section-sub">Headphones, earbuds and accessories to complement your devices.</p>
+    </div>
+    <div class="prod-grid" id="accessoriesGrid"></div>
+
+    <!-- Smart Home -->
+    <div class="section-head reveal" style="margin-top:72px;" id="smart">
+      <span class="eyebrow">Smart Home</span>
+      <h2 class="section-title">Make Your Home Smarter</h2>
+      <p class="section-sub">Smart bulbs, CCTV cameras, WiFi routers and smart locks — control your home from anywhere.</p>
+    </div>
+    <div class="prod-grid" id="smartGrid"></div>
+  </div>
+</section>
+
+<!-- WHY US STRIP -->
+<section style="background:var(--navy);padding:48px 0;">
+  <div class="container">
+    <div class="why-strip">
+      <div class="why-strip-item"><i class="fa-solid fa-certificate"></i><div><strong>100% Genuine</strong><span>Authorized distributor products only</span></div></div>
+      <div class="why-strip-item"><i class="fa-solid fa-shield-halved"></i><div><strong>Warranty Included</strong><span>Manufacturer warranty on every item</span></div></div>
+      <div class="why-strip-item"><i class="fa-solid fa-truck-fast"></i><div><strong>Fast Delivery</strong><span>24–48 hrs in Accra, nationwide 2–5 days</span></div></div>
+      <div class="why-strip-item"><i class="fa-solid fa-rotate-left"></i><div><strong>7-Day Returns</strong><span>Simple, hassle-free return policy</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="container">
+    <div class="news-inner">
+      <div class="news-text"><h3>Get deals before everyone else</h3><p>Join our newsletter for early access to sales and new arrivals.</p></div>
+      <form class="news-form" onsubmit="handleNewsletter(event)">
+        <input type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">Kiaat<span class="accent">.</span></a>
+        <span class="tagline" style="display:block;color:var(--orange);font-style:italic;font-size:12px;margin:4px 0 14px;">Strength Meets Innovation</span>
+        <p>Ghana's trusted destination for electronics and home appliances.</p>
+        <div class="footer-social">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Shop</h5><a href="electronics.html">Electronics</a><a href="appliances.html">Appliances</a><a href="deals.html">Deals</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="index.html">Home</a><a href="contact.html">Contact</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h5>Support</h5><a href="#">FAQ</a><a href="#">Returns</a><a href="#">Delivery Info</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="tel:+233552195047">+233 552 195 047</a><a href="mailto:kiaattechnologies@gmail.com">kiaattechnologies@gmail.com</a></div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item"><i class="fa-solid fa-circle-check"></i>Genuine Products</div>
+      <div class="trust-item"><i class="fa-solid fa-truck"></i>Nationwide Delivery</div>
+      <div class="trust-item"><i class="fa-solid fa-lock"></i>Secure Payments</div>
+      <div class="trust-item"><i class="fa-solid fa-rotate-left"></i>7-Day Returns</div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kiaat Technologies. All rights reserved.</span>
+      <div class="legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="fab-stack">
+  <a href="https://wa.me/233552195047" class="fab fab-wa"><i class="fa-brands fa-whatsapp"></i></a>
+</div>
+<button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+<button class="kiaaty-fab" id="kiaatyFab" onclick="toggleKiaaty()"><i class="fa-solid fa-comment-dots"></i><span class="kiaaty-badge">1</span></button>
+<div class="kiaaty-panel" id="kiaatyPanel">
+  <div class="kiaaty-head">
+    <div class="kiaaty-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="kiaaty-head-info"><h5>Kiaaty</h5><span>Online · Replies instantly</span></div>
+    <button class="kiaaty-close" onclick="toggleKiaaty()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="kiaaty-body" id="kiaatyBody"></div>
+  <div class="kiaaty-foot">
+    <div class="kiaaty-input-row">
+      <input type="text" id="kiaatyInput" placeholder="Ask Kiaaty anything..." onkeydown="if(event.key==='Enter')kiaatySend()">
+      <button class="kiaaty-send" onclick="kiaatySend()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+    <div class="kiaaty-foot-tag">Kiaaty gives helpful suggestions, not guaranteed availability.</div>
+  </div>
+</div>
+
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h3><i class="fa-solid fa-bag-shopping"></i> Your Cart</h3><button class="drawer-close" onclick="closeDrawer('cartDrawer')"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot"></div>
+</div>
+<div class="drawer" id="wishlistDrawer">
+  <div class="drawer-head"><h3><i class="fa-solid fa-heart"></i> Wishlist</h3><button class="drawer-close" onclick="closeDrawer('wishlistDrawer')"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-body" id="wishBody"></div>
+</div>
+<div class="drawer search-drawer" id="searchDrawer">
+  <div class="search-input-row">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Search products..." oninput="handleSearch(this.value)">
+    <button class="drawer-close" onclick="closeDrawer('searchDrawer')"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body"><div id="searchResults"></div></div>
+</div>
+<div class="overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+<div class="qv-overlay" id="qvOverlay" onclick="if(event.target===this)closeQuickView()">
+  <div class="qv-modal" id="qvModal"></div>
+</div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="shared.js"></script>
+<script>
+const deviceIds = [3,4,12,13,14];
+const entertainmentIds = [1,19,11,20,7,21];
+const accessoriesIds = [15];
+const smartIds = [8,9,10,22,23,24];
+
+document.getElementById('devicesGrid').innerHTML = deviceIds.map(id=>productCard(products.find(p=>p.id===id))).join('');
+document.getElementById('entertainmentGrid').innerHTML = entertainmentIds.map(id=>productCard(products.find(p=>p.id===id))).join('');
+document.getElementById('accessoriesGrid').innerHTML = accessoriesIds.map(id=>productCard(products.find(p=>p.id===id))).join('');
+document.getElementById('smartGrid').innerHTML = smartIds.map(id=>productCard(products.find(p=>p.id===id))).join('');
+</script>
+</body>
+</html>

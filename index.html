@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiaat Technologies — Strength Meets Innovation | Electronics & Home Appliances Ghana</title>
+<meta name="description" content="Ghana's trusted electronics and home appliances store. Genuine products, fast delivery, real warranty.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="announce">🚚 <b>Free Delivery</b> on orders over ₵999 in Accra &nbsp;|&nbsp; Call us: <b>+233 552 195 047</b></div>
+
+<!-- HEADER -->
+<header id="siteHeader">
+  <div class="container header-inner">
+    <button class="mobile-toggle icon-btn" onclick="toggleMobileNav()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <a href="index.html" class="logo">
+      <span class="mark"><img src="https://i.imgur.com/placeholder.png" onerror="this.style.display='none'" alt=""></span>
+      Kiaat<span class="accent">.</span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="electronics.html" class="nav-link">Electronics</a>
+      <a href="appliances.html" class="nav-link">Appliances</a>
+      <a href="deals.html" class="nav-link">Deals</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openSearch()" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="icon-btn" onclick="openDrawer('wishlistDrawer')" aria-label="Wishlist">
+        <i class="fa-regular fa-heart"></i><span class="badge" id="wishCount">0</span>
+      </button>
+      <button class="icon-btn" onclick="openDrawer('cartDrawer')" aria-label="Cart">
+        <i class="fa-solid fa-bag-shopping"></i><span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+    <span class="logo" style="font-size:20px;">Kiaat<span class="accent">.</span></span>
+    <button class="icon-btn" onclick="toggleMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <a href="index.html" onclick="toggleMobileNav()">Home</a>
+  <a href="electronics.html" onclick="toggleMobileNav()">Electronics</a>
+  <a href="appliances.html" onclick="toggleMobileNav()">Appliances</a>
+  <a href="deals.html" onclick="toggleMobileNav()">Deals</a>
+  <a href="contact.html" onclick="toggleMobileNav()">Contact</a>
+</div>
+<div class="overlay" id="mobileNavOverlay" onclick="toggleMobileNav()"></div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-slider-wrap">
+    <div class="hero-slider" id="heroSlider">
+
+      <div class="hero-slide">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Ghana's Trusted Tech Store Since 2015</div>
+            <h1>Kiaat Technologies —<br>Strength <span class="hl">Meets Innovation</span></h1>
+            <p class="sub">Quality electronics, smart gadgets, and home appliances at unbeatable prices. Genuine products, nationwide delivery, real warranty.</p>
+            <div class="hero-btns">
+              <a href="electronics.html" class="btn btn-primary">Shop Electronics <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="deals.html" class="btn btn-outline">View Deals</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="stage">
+              <img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?q=80&w=900&auto=format&fit=crop" alt="Modern electronics setup">
+            </div>
+            <div class="float-card fc1"><div class="ic" style="background:var(--orange)"><i class="fa-solid fa-truck-fast"></i></div><div><div class="label">Delivery in</div><div class="val">24–48 hrs</div></div></div>
+            <div class="float-card fc2"><div class="ic" style="background:#16A34A"><i class="fa-solid fa-shield-halved"></i></div><div><div class="label">Warranty</div><div class="val">Up to 24 months</div></div></div>
+            <div class="float-card fc3"><div class="ic" style="background:#2563EB"><i class="fa-solid fa-tag"></i></div><div><div class="label">Save up to</div><div class="val">40% Today</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-slide">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <div class="hero-badge"><i class="fa-solid fa-house"></i> Trusted In 15,000+ Ghanaian Homes</div>
+            <h1>Reliable Appliances For<br><span class="hl">Everyday Living</span></h1>
+            <p class="sub">Refrigerators, washing machines, air conditioners and microwaves built to last — genuine, energy-efficient, manufacturer warranty included.</p>
+            <div class="hero-btns">
+              <a href="appliances.html" class="btn btn-primary">Shop Appliances <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="contact.html" class="btn btn-outline">Talk to an Expert</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="stage">
+              <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=900&auto=format&fit=crop" alt="Modern kitchen with appliances">
+            </div>
+            <div class="float-card fc1"><div class="ic" style="background:#16A34A"><i class="fa-solid fa-leaf"></i></div><div><div class="label">Energy</div><div class="val">Saving Models</div></div></div>
+            <div class="float-card fc2"><div class="ic" style="background:#2563EB"><i class="fa-solid fa-shield-halved"></i></div><div><div class="label">Compressor</div><div class="val">10-Yr Warranty</div></div></div>
+            <div class="float-card fc3"><div class="ic" style="background:var(--orange)"><i class="fa-solid fa-truck-fast"></i></div><div><div class="label">Free Delivery</div><div class="val">Over ₵999</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-slide">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <div class="hero-badge"><i class="fa-solid fa-tv"></i> Next-Level Entertainment</div>
+            <h1>Bring The Big Screen<br><span class="hl">Home</span></h1>
+            <p class="sub">Smart TVs, sound systems, and gaming consoles for the ultimate entertainment setup — all genuine, all backed by warranty.</p>
+            <div class="hero-btns">
+              <a href="electronics.html" class="btn btn-primary">Shop Entertainment <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="deals.html" class="btn btn-outline">View Deals</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="stage">
+              <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?q=80&w=900&auto=format&fit=crop" alt="Smart TV in living room">
+            </div>
+            <div class="float-card fc1"><div class="ic" style="background:#2563EB"><i class="fa-solid fa-tv"></i></div><div><div class="label">Display</div><div class="val">4K Ultra HD</div></div></div>
+            <div class="float-card fc2"><div class="ic" style="background:var(--orange)"><i class="fa-solid fa-volume-high"></i></div><div><div class="label">Sound</div><div class="val">Immersive Audio</div></div></div>
+            <div class="float-card fc3"><div class="ic" style="background:#16A34A"><i class="fa-solid fa-shield-halved"></i></div><div><div class="label">Warranty</div><div class="val">Up to 24 months</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button class="hero-arrow prev" onclick="heroChangeSlide(-1)" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="hero-arrow next" onclick="heroChangeSlide(1)" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+  <div class="hero-dots" id="heroDots"></div>
+  <div class="container hero-stats-row">
+    <div class="hero-stats">
+      <div><strong>15K+</strong><span>Happy Customers</span></div>
+      <div><strong>2,400+</strong><span>Products Available</span></div>
+      <div><strong>4.9/5</strong><span>Customer Rating</span></div>
+      <div><strong>10+ Yrs</strong><span>In Business</span></div>
+    </div>
+  </div>
+  <div class="hero-marquee">
+    <div class="container"><p>Trusted brands available in store</p></div>
+    <div class="marquee-track">
+      <div class="brand-row"><span>SAMSUNG</span><span>LG</span><span>SONY</span><span>HISENSE</span><span>HP</span><span>DELL</span><span>TECNO</span><span>INFINIX</span></div>
+      <div class="brand-row" aria-hidden="true"><span>SAMSUNG</span><span>LG</span><span>SONY</span><span>HISENSE</span><span>HP</span><span>DELL</span><span>TECNO</span><span>INFINIX</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section-pad bg-white" id="categories">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Browse Catalogue</span>
+      <h2 class="section-title">Shop by Category</h2>
+      <p class="section-sub">From everyday gadgets to full home appliances — find exactly what you need.</p>
+    </div>
+    <div class="cat-grid">
+      <a href="electronics.html" class="cat-card reveal">
+        <div class="ic-wrap" style="background:linear-gradient(135deg,#2563EB,#1D4ED8)"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <h4>Electronics</h4>
+        <p>Smartphones, laptops, tablets & accessories.</p>
+        <span class="count">412 Products <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="appliances.html" class="cat-card reveal">
+        <div class="ic-wrap" style="background:linear-gradient(135deg,#16A34A,#15803D)"><i class="fa-solid fa-kitchen-set"></i></div>
+        <h4>Home Appliances</h4>
+        <p>Refrigerators, ACs, washing machines & microwaves.</p>
+        <span class="count">286 Products <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="electronics.html#entertainment" class="cat-card reveal">
+        <div class="ic-wrap" style="background:linear-gradient(135deg,#F97316,#EA580C)"><i class="fa-solid fa-tv"></i></div>
+        <h4>Entertainment</h4>
+        <p>Smart TVs, sound systems & gaming consoles.</p>
+        <span class="count">198 Products <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="electronics.html#smart" class="cat-card reveal">
+        <div class="ic-wrap" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)"><i class="fa-solid fa-house-signal"></i></div>
+        <h4>Smart Home</h4>
+        <p>Smart bulbs, CCTV, WiFi routers & smart locks.</p>
+        <span class="count">154 Products <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section-pad bg-soft" id="featured">
+  <div class="container">
+    <div class="products-head">
+      <div class="section-head reveal" style="margin-bottom:0">
+        <span class="eyebrow">Top Picks</span>
+        <h2 class="section-title">Best Selling Products</h2>
+      </div>
+      <a href="electronics.html" class="btn btn-dark btn-sm" style="flex-shrink:0">View All Products <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="prod-grid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why section-pad">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Why Kiaat Technologies</span>
+      <h2 class="section-title">Built On Trust, Backed By Service</h2>
+      <p class="section-sub">Everything we do is designed to make buying electronics in Ghana simple, safe, and worth it.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-certificate"></i></div><h4>Genuine Products</h4><p>100% authentic items sourced from authorized brand distributors.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-truck-fast"></i></div><h4>Fast Delivery</h4><p>Same-week delivery across Accra and nationwide shipping in 2–5 days.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-shield-halved"></i></div><h4>Warranty Support</h4><p>Manufacturer warranty on every product, with local after-sales service.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-tags"></i></div><h4>Affordable Prices</h4><p>Competitive pricing for retail and wholesale buyers, no hidden costs.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-lock"></i></div><h4>Secure Payments</h4><p>Pay safely with Mobile Money, card, or cash on delivery.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-headset"></i></div><h4>Excellent Support</h4><p>Real customer service reachable by phone, WhatsApp, or email.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-map-location-dot"></i></div><h4>Nationwide Delivery</h4><p>From Accra to Tamale, we deliver to all sixteen regions of Ghana.</p></div>
+      <div class="why-card reveal"><div class="ic"><i class="fa-solid fa-rotate-left"></i></div><h4>Easy Returns</h4><p>Simple 7-day return policy on eligible items, no stress.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<section class="promo section-pad" id="promo">
+  <div class="container promo-inner">
+    <div class="promo-left">
+      <span class="pill"><i class="fa-solid fa-fire"></i> Limited Time Offer</span>
+      <h2>Up To <span>40% Off</span><br>Selected Electronics</h2>
+      <p>From smart TVs to refrigerators — our biggest markdowns end soon. Grab yours before the timer runs out.</p>
+      <div class="timer" id="countdown">
+        <div class="t-box"><strong id="cd-days">02</strong><span>Days</span></div>
+        <div class="t-box"><strong id="cd-hours">14</strong><span>Hours</span></div>
+        <div class="t-box"><strong id="cd-mins">36</strong><span>Mins</span></div>
+        <div class="t-box"><strong id="cd-secs">52</strong><span>Secs</span></div>
+      </div>
+    </div>
+    <div class="promo-right">
+      <div class="promo-disc"><strong>40%</strong><span>OFF TODAY</span></div>
+      <a href="deals.html" class="btn btn-primary">Shop The Sale <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Customer Stories</span>
+      <h2 class="section-title">What Our Customers Say</h2>
+    </div>
+    <div class="test-grid" id="testGrid"></div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="section-pad bg-soft">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Latest Technology</span>
+      <h2 class="section-title">From The Kiaat Blog</h2>
+    </div>
+    <div class="blog-grid" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-pad bg-white" id="faq">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Got Questions?</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-wrap" id="faqWrap"></div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="container">
+    <div class="news-inner">
+      <div class="news-text"><h3>Get deals before everyone else</h3><p>Join our newsletter for early access to sales, restocks, and new arrivals.</p></div>
+      <form class="news-form" onsubmit="handleNewsletter(event)">
+        <input type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">Kiaat<span class="accent">.</span></a>
+        <span class="tagline" style="display:block;color:var(--orange);font-style:italic;font-size:12px;margin:4px 0 14px;">Strength Meets Innovation</span>
+        <p>Ghana's trusted destination for electronics, smart gadgets, and home appliances.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Shop</h5><a href="electronics.html">Electronics</a><a href="appliances.html">Appliances</a><a href="deals.html">Deals & Offers</a><a href="electronics.html#smart">Smart Home</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="index.html">About Us</a><a href="contact.html">Contact</a><a href="#">Careers</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h5>Support</h5><a href="#">Customer Support</a><a href="index.html#faq">FAQ</a><a href="#">Returns Policy</a><a href="#">Delivery Info</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="tel:+233552195047">+233 552 195 047</a><a href="mailto:kiaattechnologies@gmail.com">kiaattechnologies@gmail.com</a><a href="#">Accra, Ghana</a></div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item"><i class="fa-solid fa-circle-check"></i>Genuine Products</div>
+      <div class="trust-item"><i class="fa-solid fa-truck"></i>Nationwide Delivery</div>
+      <div class="trust-item"><i class="fa-solid fa-lock"></i>Secure Payments</div>
+      <div class="trust-item"><i class="fa-solid fa-rotate-left"></i>7-Day Returns</div>
+      <div class="trust-item"><i class="fa-solid fa-headset"></i>24/7 Support</div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kiaat Technologies. All rights reserved.</span>
+      <div class="legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING -->
+<div class="fab-stack">
+  <a href="https://wa.me/233552195047" class="fab fab-wa" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+</div>
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+<button class="kiaaty-fab" id="kiaatyFab" onclick="toggleKiaaty()" aria-label="Chat with Kiaaty">
+  <i class="fa-solid fa-comment-dots"></i>
+  <span class="kiaaty-badge">1</span>
+</button>
+<div class="kiaaty-panel" id="kiaatyPanel">
+  <div class="kiaaty-head">
+    <div class="kiaaty-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="kiaaty-head-info"><h5>Kiaaty</h5><span>Online · Replies instantly</span></div>
+    <button class="kiaaty-close" onclick="toggleKiaaty()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="kiaaty-body" id="kiaatyBody"></div>
+  <div class="kiaaty-foot">
+    <div class="kiaaty-input-row">
+      <input type="text" id="kiaatyInput" placeholder="Ask Kiaaty anything..." onkeydown="if(event.key==='Enter')kiaatySend()">
+      <button class="kiaaty-send" onclick="kiaatySend()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+    <div class="kiaaty-foot-tag">Kiaaty gives helpful suggestions, not guaranteed availability.</div>
+  </div>
+</div>
+
+<!-- DRAWERS -->
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h3><i class="fa-solid fa-bag-shopping"></i> Your Cart</h3><button class="drawer-close" onclick="closeDrawer('cartDrawer')"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot"></div>
+</div>
+<div class="drawer" id="wishlistDrawer">
+  <div class="drawer-head"><h3><i class="fa-solid fa-heart"></i> Wishlist</h3><button class="drawer-close" onclick="closeDrawer('wishlistDrawer')"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-body" id="wishBody"></div>
+</div>
+<div class="drawer search-drawer" id="searchDrawer">
+  <div class="search-input-row">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Search products..." oninput="handleSearch(this.value)">
+    <button class="drawer-close" onclick="closeDrawer('searchDrawer')"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body"><div id="searchResults"></div></div>
+</div>
+<div class="overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+
+<!-- QV MODAL -->
+<div class="qv-overlay" id="qvOverlay" onclick="if(event.target===this)closeQuickView()">
+  <div class="qv-modal" id="qvModal"></div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<script src="shared.js"></script>
+<script>
+// PAGE-SPECIFIC: render featured products (8 items)
+const featuredIds = [1,4,3,7,11,8,2,15];
+document.getElementById('featuredGrid').innerHTML = featuredIds.map(id => productCard(products.find(p=>p.id===id))).join('');
+
+// Testimonials
+document.getElementById('testGrid').innerHTML = testimonials.map(t=>`
+  <div class="test-card reveal in">
+    <div class="test-stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)}</div>
+    <p class="test-quote">"${t.quote}"</p>
+    <div class="test-person"><img src="${t.img}" alt="${t.name}"><div><strong>${t.name}</strong><span>${t.role}</span></div></div>
+  </div>`).join('');
+
+// Blog
+document.getElementById('blogGrid').innerHTML = blogPosts.map(b=>`
+  <a href="#" class="blog-card reveal in">
+    <div class="blog-img"><img src="${b.img}" alt="${b.title}" loading="lazy"></div>
+    <div class="blog-body"><span class="blog-tag">${b.tag}</span><h4>${b.title}</h4><div class="blog-meta"><span>${b.date}</span><span>•</span><span>${b.read}</span></div></div>
+  </a>`).join('');
+
+// FAQ
+document.getElementById('faqWrap').innerHTML = faqData.map((f,i)=>`
+  <div class="faq-item reveal in" id="faqItem${i}">
+    <div class="faq-q" onclick="toggleFaq(${i})"><h4>${f.q}</h4><i class="fa-solid fa-chevron-down"></i></div>
+    <div class="faq-a"><p>${f.a}</p></div>
+  </div>`).join('');
+</script>
+</body>
+</html>
