@@ -156,7 +156,7 @@ function updateCartUI(){
     <div class="drawer-total"><span>Total</span><span>${GHS(subtotal+delivery)}</span></div>
     <button class="btn btn-primary" onclick="openCheckout()">Proceed to Checkout</button>`;
 }
-updateCartUI();
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",updateCartUI);}else{updateCartUI();}
 
 /* ============ WISHLIST ============ */
 function toggleWishlist(id, btn){
@@ -242,10 +242,28 @@ function closeAllDrawers(){
 function openSearch(){
   openDrawer('searchDrawer');
   setTimeout(()=>{ const el=document.getElementById('searchInput'); if(el) el.focus(); },300);
+  // show suggestions, hide results
+  const sugg=document.getElementById('searchSuggestions');
+  const res=document.getElementById('searchResults');
+  if(sugg) sugg.style.display='block';
+  if(res) res.innerHTML='';
+}
+function quickSearch(el){
+  const term = typeof el === 'string' ? el : el.textContent;
+  const inp=document.getElementById('searchInput');
+  if(inp) inp.value=term;
+  handleSearch(term);
 }
 function handleSearch(val){
+  const sugg=document.getElementById('searchSuggestions');
   const res=document.getElementById('searchResults');
-  if(!val.trim()){ res.innerHTML=''; return; }
+  if(!val.trim()){
+    if(sugg) sugg.style.display='block';
+    if(res) res.innerHTML='';
+    return;
+  }
+  if(sugg) sugg.style.display='none';
+  if(!res) return;
   const matches=products.filter(p=>p.name.toLowerCase().includes(val.toLowerCase())||p.catLabel.toLowerCase().includes(val.toLowerCase()));
   res.innerHTML=matches.length?matches.map(p=>`
     <div class="search-result-row" onclick="closeDrawer('searchDrawer');openQuickView(${p.id})">
@@ -575,8 +593,8 @@ function toggleKiaaty(){
     kiaatyShowTyping();
     setTimeout(()=>{
       kiaatyHideTyping();
-      kiaatyAddMessage('bot',"Hi! I'm <b>Kiaaty</b> 👋 I can help you find products, check delivery info, or answer any questions about Kiaat Technologies. What can I help with?");
-      kiaatyShowQuickReplies(['📺 Smart TVs','💻 Laptops','🚚 Delivery info','💬 Talk to a human']);
+      kiaatyAddMessage('bot',"Hi! I'm <b>Kiaaty</b> 👋 your AI shopping assistant for <b>Kiaat Technologies</b>!<br><br>I know <b>everything</b> about our store — every product, price, brand, delivery timeline, payment method, warranty, return policy, and more. Just ask me anything! 😊");
+      kiaatyShowQuickReplies(['🛍️ What do you sell?','💰 Today\'s deals','🚚 Delivery info','💳 Payment methods','🛡️ Warranty & returns','💬 Talk to the team']);
     },900);
   }
   setTimeout(()=>{ const inp=document.getElementById('kiaatyInput'); if(inp) inp.focus(); },350);
@@ -620,34 +638,785 @@ function kiaatyRec(filterFn,max){
 }
 function kiaatyWa(msg,label){ return `<a href="https://wa.me/233552195047?text=${encodeURIComponent(msg||'Hi, I need help.')}" target="_blank" class="kiaaty-wa-btn" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:10px 16px;border-radius:100px;margin-top:6px;"><i class="fa-brands fa-whatsapp"></i> ${label||'Chat on WhatsApp'}</a>`; }
 function kiaatyRespond(raw){
-  const t=raw.toLowerCase();
-  const has=(...ws)=>ws.some(w=>t.includes(w));
-  const region=GHANA_REGIONS.find(r=>t.includes(r.toLowerCase()));
-  if(region&&has('deliver','ship','reach')){ kiaatyAddMessage('bot',`Yes, we deliver to <b>${region}</b>! Estimated time: <b>${region==='Greater Accra'?'24–48 hours':'2–5 business days'}</b>. Free on orders over ₵999.`); return; }
-  if(has('hello','hi','hey','morning','afternoon')){ kiaatyAddMessage('bot','Hey! 👋 What are you shopping for today?'); kiaatyShowQuickReplies(['📺 Smart TVs','📱 Smartphones','🧊 Fridges','🎮 Gaming']); return; }
-  if(has('thank')){ kiaatyAddMessage('bot',"You're very welcome! Anything else I can help with? 😊"); return; }
-  if(has('human','agent','representative','talk to someone','customer service')){ kiaatyAddMessage('bot','Our team is happy to help directly on WhatsApp:'); kiaatyAddMessage('bot',kiaatyWa('Hi, I need help from the Kiaat Technologies team.')); return; }
-  if(has('delivery','shipping','how long','deliver')){ kiaatyAddMessage('bot','Accra: <b>24–48 hours</b>. Other regions: <b>2–5 business days</b>. We cover all 16 regions. Delivery is free on orders over ₵999, otherwise ₵30.'); return; }
-  if(has('warranty','return','refund','guarantee')){ kiaatyAddMessage('bot','All products carry full manufacturer warranty plus our local after-sales support. We have a <b>7-day return policy</b> on eligible unused items.'); return; }
-  if(has('payment','pay','momo','mobile money','card','cash')){ kiaatyAddMessage('bot','We accept <b>MTN MoMo, Telecel Cash, AirtelTigo Money</b>, Visa/Mastercard, and <b>Cash on Delivery</b>.'); return; }
-  if(has('deal','sale','discount','offer','promo','% off')){ kiaatyAddMessage('bot','We have <b>up to 40% off</b> selected products right now! Check our Deals page.'); kiaatyAddMessage('bot',`<a href="deals.html" style="color:var(--blue);font-weight:700;">→ View All Deals</a>`); return; }
-  if(has('wholesale','bulk','business')){ kiaatyAddMessage('bot','We offer competitive wholesale pricing. Send us your list and we\'ll quote you quickly.'); kiaatyAddMessage('bot',kiaatyWa('Hi, I need a wholesale pricing quote.','Request Wholesale Quote')); return; }
-  if(has('tv','television','smart tv')){ kiaatyAddMessage('bot','Here are our top-rated Smart TVs:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Smart TVs')); return; }
-  if(has('laptop','computer','notebook')){ kiaatyAddMessage('bot','Here are our best laptops:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Laptops')); return; }
-  if(has('phone','smartphone')){ kiaatyAddMessage('bot','Check out these popular smartphones:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Smartphones')); return; }
-  if(has('tablet','ipad')){ kiaatyAddMessage('bot','Here\'s a great tablet option:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Tablets')); return; }
-  if(has('fridge','refrigerator','freezer')){ kiaatyAddMessage('bot','Our top refrigerators:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Refrigerators')); return; }
-  if(has('air conditioner','ac ',' ac','cooling')){ kiaatyAddMessage('bot','Our best air conditioners:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Air Conditioners')); return; }
-  if(has('washing machine','laundry','washer')){ kiaatyAddMessage('bot','Top pick for laundry:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Washing Machines')); return; }
-  if(has('microwave')){ kiaatyAddMessage('bot','A popular microwave:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Microwaves')); return; }
-  if(has('speaker','sound system','jbl','bluetooth speaker')){ kiaatyAddMessage('bot','Top sound systems:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Sound Systems')); return; }
-  if(has('gaming','playstation','ps5','xbox','console')){ kiaatyAddMessage('bot','Our top gaming consoles:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Gaming Consoles')); return; }
-  if(has('camera','cctv','security')){ kiaatyAddMessage('bot','Our CCTV cameras:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='CCTV Cameras')); return; }
-  if(has('router','wifi','internet')){ kiaatyAddMessage('bot','Our WiFi routers:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='WiFi Routers')); return; }
-  if(has('smart bulb','smart light')){ kiaatyAddMessage('bot','A great smart bulb option:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Smart Bulbs')); return; }
-  if(has('smart lock','door lock')){ kiaatyAddMessage('bot','Our smart lock pick:'); kiaatyAddMessage('bot',kiaatyRec(p=>p.catLabel==='Smart Locks')); return; }
-  if(has('email','contact','reach you')){ kiaatyAddMessage('bot',`You can email us at <b>${BUSINESS_EMAIL}</b> or use the <a href="contact.html" style="color:var(--blue);font-weight:700;">Contact page</a>.`); return; }
-  kiaatyAddMessage('bot',"I'm not sure I caught that — I can help with product recommendations, delivery, payments, warranty, returns, or general questions. Or reach our team directly:");
-  kiaatyAddMessage('bot',kiaatyWa('Hi, I have a question about Kiaat Technologies.'));
-  kiaatyShowQuickReplies(['📺 Browse TVs','🚚 Delivery info','💬 Talk to a human']);
+  const t = raw.toLowerCase().trim();
+  const has = (...ws) => ws.some(w => t.includes(w));
+  const exact = (w) => t === w.toLowerCase();
+
+  // ── helpers ──────────────────────────────────────────────────────────────
+  function link(href, label){ return `<a href="${href}" style="color:var(--blue);font-weight:700;text-decoration:underline;">${label}</a>`; }
+  function bold(s){ return `<b>${s}</b>`; }
+
+  // ── find a product by name keyword ───────────────────────────────────────
+  function findProduct(keyword){
+    return products.find(p => p.name.toLowerCase().includes(keyword.toLowerCase()));
+  }
+
+  // ── price of a specific product ──────────────────────────────────────────
+  function productPrice(p){
+    if(!p) return '';
+    const off = p.oldPrice ? ` <span style="color:var(--orange);font-size:12px;">-${Math.round((1-p.price/p.oldPrice)*100)}%</span>` : '';
+    const old = p.oldPrice ? ` <span style="text-decoration:line-through;color:var(--text-mute);font-size:12px;">${GHS(p.oldPrice)}</span>` : '';
+    return `${GHS(p.price)}${old}${off}`;
+  }
+
+  // ── stock status text ─────────────────────────────────────────────────────
+  function stockText(p){
+    if(!p) return '';
+    return p.stock <= 6 ? `⚠️ Only ${p.stock} left in stock` : `✅ In Stock (${p.stock}+ units)`;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 1. GREETINGS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('hello','hi ','hey ','good morning','good afternoon','good evening','good day','howdy','sup ','what\'s up','whats up') || exact('hi') || exact('hey') || exact('hello')){
+    kiaatyAddMessage('bot',"Hey there! 👋 Welcome to <b>Kiaat Technologies</b>! I'm Kiaaty, your personal shopping assistant. I know everything about our store — products, prices, delivery, warranties, payments, returns and more. What can I help you with today?");
+    kiaatyShowQuickReplies(['🛍️ Browse categories','💰 See today\'s deals','🚚 Delivery & shipping','📞 Contact the team']);
+    return;
+  }
+
+  if(has('thank','thanks','appreciate','helpful','great help','well done','you\'re good')){
+    kiaatyAddMessage('bot',"You're so welcome! 😊 Happy to help anytime. Is there anything else you'd like to know about our products, delivery, or anything else on the site?");
+    return;
+  }
+
+  if(has('bye','goodbye','see you','take care','later','ciao')){
+    kiaatyAddMessage('bot',"Goodbye! 👋 Thanks for visiting Kiaat Technologies. Come back anytime — we're always here to help you find the best deals in Ghana! 🇬🇭");
+    return;
+  }
+
+  if(has('how are you','how r u','you okay','you good','are you okay')){
+    kiaatyAddMessage('bot',"I'm doing great, thanks for asking! 😄 I'm always ready to help you find amazing electronics and home appliances at the best prices. What are you shopping for today?");
+    kiaatyShowQuickReplies(['📺 Smart TVs','💻 Laptops','📱 Phones','🧊 Fridges']);
+    return;
+  }
+
+  if(has('who are you','what are you','your name','what is kiaaty','tell me about yourself','introduce yourself')){
+    kiaatyAddMessage('bot',"I'm <b>Kiaaty</b> 🤖 — the AI shopping assistant for <b>Kiaat Technologies</b>! I know every product in our catalogue, all our prices, delivery timelines, payment options, warranty policies, and much more. Ask me anything about the store and I'll give you an instant, accurate answer. Think of me as your personal tech advisor! 💡");
+    kiaatyShowQuickReplies(['What products do you sell?','How does delivery work?','What brands do you carry?']);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 2. ABOUT THE COMPANY
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('about kiaat','about the company','who is kiaat','kiaat technologies','what is kiaat','tell me about kiaat','company info','company background','history','founded','since when','how old','how long have you')){
+    kiaatyAddMessage('bot',`<b>Kiaat Technologies</b> is Ghana's trusted destination for electronics, smart gadgets, and home appliances. Our tagline is <b>"Strength Meets Innovation"</b> 💪<br><br>
+Here's a quick overview:<br>
+🗓️ <b>In business since:</b> 2015 — over 10 years serving Ghanaians<br>
+👥 <b>Happy customers:</b> 15,000+ and growing<br>
+📦 <b>Products available:</b> 2,400+ items across 4 major categories<br>
+⭐ <b>Customer rating:</b> 4.9 out of 5<br>
+🚚 <b>Delivery coverage:</b> All 16 regions of Ghana<br>
+🛡️ <b>Our promise:</b> 100% genuine products, manufacturer warranty, secure payments, and real after-sales support.`);
+    return;
+  }
+
+  if(has('mission','vision','values','what do you stand for','slogan','tagline','motto','strength meets')){
+    kiaatyAddMessage('bot',`Our tagline is <b>"Strength Meets Innovation"</b> — it reflects everything we stand for at Kiaat Technologies:<br><br>
+💪 <b>Strength</b> — reliable, durable products that last<br>
+💡 <b>Innovation</b> — the latest technology at accessible prices<br>
+🤝 <b>Trust</b> — genuine products, honest pricing, real warranty<br>
+🇬🇭 <b>Local</b> — built for Ghanaian homes, lifestyles, and budgets`);
+    return;
+  }
+
+  if(has('how many customer','customers','satisfied','reviews overall','overall rating','average rating')){
+    kiaatyAddMessage('bot',"We've served over <b>15,000 happy customers</b> across Ghana! Our overall customer rating is an impressive <b>4.9 out of 5</b> ⭐ — built on years of genuine products, fast delivery, and dependable after-sales support.");
+    return;
+  }
+
+  if(has('how many product','product count','catalogue','catalog','how much do you sell','all categories')){
+    kiaatyAddMessage('bot',`We have over <b>2,400 products</b> across 4 main categories:<br><br>
+📱 <b>Electronics</b> — 412 products (phones, laptops, tablets, accessories)<br>
+🏠 <b>Home Appliances</b> — 286 products (fridges, ACs, washing machines, microwaves)<br>
+🎮 <b>Entertainment</b> — 198 products (TVs, sound systems, gaming consoles)<br>
+🏡 <b>Smart Home</b> — 154 products (smart bulbs, CCTV, WiFi routers, smart locks)`);
+    kiaatyShowQuickReplies(['📱 Show Electronics','🏠 Show Appliances','🎮 Show Entertainment','🏡 Smart Home']);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 3. LOCATION & CONTACT
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('where are you','your location','where is kiaat','physical store','shop address','office','visit you','come to your shop','come in','walk in')){
+    kiaatyAddMessage('bot',`Kiaat Technologies is based in <b>Accra, Ghana</b> 📍<br><br>
+We operate primarily as an <b>online store</b>, meaning you browse and order here on the website and we deliver to you — no need to travel! We deliver to <b>all 16 regions of Ghana</b>.<br><br>
+Need to speak with us directly? Reach us via:<br>
+📞 <b>Phone:</b> +233 552 195 047<br>
+💬 <b>WhatsApp:</b> +233 552 195 047<br>
+📧 <b>Email:</b> kiaattechnologies@gmail.com`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I\'d like to get in touch with Kiaat Technologies.','Chat With Us on WhatsApp'));
+    return;
+  }
+
+  if(has('phone number','phone','call you','telephone','hotline','reach you by phone')){
+    kiaatyAddMessage('bot',`You can call us on <b>+233 552 195 047</b> 📞<br><br>
+Our lines are open <b>Monday – Saturday, 8am – 7pm</b>. For faster response outside business hours, send us a WhatsApp message — we monitor it regularly.`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I\'d like to speak with someone at Kiaat Technologies.','WhatsApp Us Now'));
+    return;
+  }
+
+  if(has('whatsapp','wa ','watsapp','whats app')){
+    kiaatyAddMessage('bot',`Our WhatsApp number is <b>+233 552 195 047</b> 💬 — it's our <b>fastest response channel</b>! You can send product photos, ask for quotes, or get order support. We typically reply within minutes during business hours.`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I found you on the Kiaat Technologies website and I have a question.','Open WhatsApp Chat'));
+    return;
+  }
+
+  if(has('email','e-mail','mail you','send a mail','send email','email address')){
+    kiaatyAddMessage('bot',`Our email address is <b>kiaattechnologies@gmail.com</b> 📧<br><br>
+We respond to emails within <b>24 hours</b> on business days. For urgent queries, WhatsApp is faster.<br><br>
+You can also use the ${link('contact.html','Contact page')} to send us a message directly from the website.`);
+    return;
+  }
+
+  if(has('business hour','opening hour','open time','close time','when do you open','when are you open','working hour','office hour','what time','operating hour')){
+    kiaatyAddMessage('bot',`Our business hours are:<br><br>
+🕗 <b>Monday – Friday:</b> 8:00 AM – 7:00 PM<br>
+🕘 <b>Saturday:</b> 9:00 AM – 6:00 PM<br>
+❌ <b>Sunday:</b> Closed<br><br>
+📱 Our <b>WhatsApp</b> is monitored outside business hours — feel free to leave a message and we'll reply first thing the next working day.`);
+    return;
+  }
+
+  if(has('social media','facebook','instagram','twitter','tiktok','x.com','follow you','follow kiaat','social page')){
+    kiaatyAddMessage('bot',`You can find and follow us on social media! Look for the icons at the bottom of any page 👇<br><br>
+📘 <b>Facebook</b> — Kiaat Technologies<br>
+📸 <b>Instagram</b> — Kiaat Technologies<br>
+🐦 <b>X (Twitter)</b> — Kiaat Technologies<br>
+🎵 <b>TikTok</b> — Kiaat Technologies<br><br>
+Follow us for deals, new arrivals, and tech tips!`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 4. DELIVERY
+  // ─────────────────────────────────────────────────────────────────────────
+  const matchedRegion = GHANA_REGIONS.find(r => t.includes(r.toLowerCase()));
+  if(matchedRegion && has('deliver','ship','reach','send','get here','come here','available')){
+    const est = matchedRegion === 'Greater Accra' ? '24–48 hours' : '2–5 business days';
+    kiaatyAddMessage('bot',`Yes! We deliver to <b>${matchedRegion}</b> 🚚<br><br>
+⏱️ <b>Estimated delivery time:</b> ${est}<br>
+💸 <b>Delivery fee:</b> ${matchedRegion === 'Greater Accra' ? 'Free on orders over ₵999; ₵30 flat fee below that' : 'Calculated at checkout based on order size and location'}<br><br>
+We cover <b>all 16 regions of Ghana</b> — no matter where you are, we'll get it to you!`);
+    return;
+  }
+
+  if(has('delivery','shipping','how long','when will','how soon','dispatch','estimated time','delivery time','arrive','get my order')){
+    kiaatyAddMessage('bot',`Here's our full delivery breakdown 🚚:<br><br>
+🏙️ <b>Accra (Greater Accra):</b> 24–48 hours<br>
+🌍 <b>Other regions:</b> 2–5 business days<br>
+🇬🇭 <b>Coverage:</b> All 16 regions of Ghana<br><br>
+💸 <b>Delivery fees:</b><br>
+✅ <b>FREE</b> on orders over ₵999<br>
+🏷️ Flat <b>₵30</b> fee on orders below ₵999<br><br>
+Orders are typically dispatched within 24 hours of payment confirmation. You'll receive your order number after checkout to track progress.`);
+    return;
+  }
+
+  if(has('free delivery','free shipping','delivery fee','shipping cost','delivery cost','how much is delivery','delivery charge')){
+    kiaatyAddMessage('bot',`🎉 <b>Free delivery</b> on all orders over <b>₵999</b>!<br><br>
+For orders below ₵999, a flat fee of <b>₵30</b> applies — nationwide to all 16 regions of Ghana.<br><br>
+💡 Tip: Adding more items to your cart to reach ₵999 saves you the delivery fee!`);
+    return;
+  }
+
+  if(has('track','where is my order','order status','my order','tracking number','track my','check my order')){
+    kiaatyAddMessage('bot',`To track your order:<br><br>
+1️⃣ After checkout you'll receive an <b>order number</b> (e.g. KT2026XXXXXX)<br>
+2️⃣ Keep that number handy<br>
+3️⃣ Contact us with it via WhatsApp or phone and we'll give you a real-time update<br><br>
+📞 <b>Call/WhatsApp:</b> +233 552 195 047`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I\'d like to track my Kiaat Technologies order.','Track Order on WhatsApp'));
+    return;
+  }
+
+  if(has('nationwide','all region','every region','which region','regions you cover','deliver everywhere','where do you deliver','delivery area','coverage')){
+    kiaatyAddMessage('bot',`We deliver to <b>all 16 regions of Ghana</b> 🇬🇭:<br><br>
+Greater Accra · Ashanti · Western · Central · Eastern · Volta · Northern · Upper East · Upper West · Bono · Bono East · Ahafo · Western North · Oti · Savannah · North East<br><br>
+No matter where you are in Ghana, we'll get your order to you!`);
+    return;
+  }
+
+  if(has('same day','express','urgent','fast delivery','next day','quick delivery')){
+    kiaatyAddMessage('bot',`For orders placed within Accra, we aim to deliver within <b>24–48 hours</b> — sometimes even same day for urgent orders, depending on stock and time of order.<br><br>
+📞 For urgent requests, please call or WhatsApp us directly on <b>+233 552 195 047</b> and we'll do our best to prioritise your delivery.`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I need an urgent/express delivery from Kiaat Technologies.','Request Express Delivery'));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 5. PAYMENT
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('payment','pay','how to pay','payment method','momo','mobile money','mtn','telecel','airteltigo','card','visa','mastercard','cash on delivery','cod','transfer','bank')){
+    kiaatyAddMessage('bot',`We accept multiple payment methods for your convenience 💳:<br><br>
+📱 <b>Mobile Money:</b><br>
+&nbsp;&nbsp;• MTN Mobile Money<br>
+&nbsp;&nbsp;• Telecel Cash<br>
+&nbsp;&nbsp;• AirtelTigo Money<br><br>
+💳 <b>Bank Cards:</b><br>
+&nbsp;&nbsp;• Visa debit/credit card<br>
+&nbsp;&nbsp;• Mastercard debit/credit card<br><br>
+💵 <b>Cash on Delivery</b> — pay our rider when your order arrives (available in eligible areas)<br><br>
+All payments are <b>100% secure</b>. Your details are never stored or shared.`);
+    return;
+  }
+
+  if(has('is it safe','secure','secure payment','payment secure','safe to pay','trust','legit','real','genuine store','scam','fake')){
+    kiaatyAddMessage('bot',`Absolutely! Kiaat Technologies is a <b>100% legitimate and trusted</b> store 🛡️<br><br>
+✅ We've been in business since <b>2015</b><br>
+✅ Over <b>15,000 happy customers</b> across Ghana<br>
+✅ All products are <b>genuine, brand-new</b> and sourced from authorized distributors<br>
+✅ We provide <b>manufacturer warranty</b> on every item<br>
+✅ <b>Secure payment</b> processing — your details are never stored<br>
+✅ <b>7-day return policy</b> for peace of mind<br>
+✅ Real team available by phone, WhatsApp and email<br><br>
+Our <b>4.9/5 customer rating</b> from 15,000+ customers speaks for itself! 🌟`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 6. WARRANTY & RETURNS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('warranty','guarantee','how long is warranty','product warranty','manufacturer warranty','compressor warranty')){
+    kiaatyAddMessage('bot',`Every product sold at Kiaat Technologies comes with a <b>manufacturer's warranty</b> 🛡️<br><br>
+📋 <b>General electronics:</b> 12 months manufacturer warranty<br>
+❄️ <b>Refrigerators (LG/Samsung):</b> Up to <b>10-year compressor warranty</b><br>
+📺 <b>Smart TVs:</b> 12–24 months warranty<br>
+🌬️ <b>Air conditioners:</b> 12 months + 1-year installation warranty<br>
+💻 <b>Laptops:</b> 12 months manufacturer warranty<br><br>
+We also provide <b>local after-sales support</b> — so if something goes wrong, our team helps you sort it out right here in Ghana, without you needing to contact an overseas brand directly.`);
+    return;
+  }
+
+  if(has('return','refund','exchange','send back','damaged','faulty','broken','defective','not working','wrong item','wrong product')){
+    kiaatyAddMessage('bot',`We have a simple <b>7-day return policy</b> 🔄<br><br>
+📌 <b>Conditions for a return:</b><br>
+• Item must be <b>unused</b> and in <b>original packaging</b><br>
+• Return must be initiated within <b>7 days</b> of delivery<br>
+• Must have original receipt/order number<br><br>
+📌 <b>Eligible for return/exchange:</b><br>
+• Wrong item delivered<br>
+• Item arrived damaged or defective<br>
+• Item doesn't match the product description<br><br>
+📌 <b>How to start a return:</b><br>
+Contact our team via WhatsApp or phone with your order number and we'll guide you through the process.`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I need to return or exchange a product from Kiaat Technologies.','Start a Return on WhatsApp'));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 7. WHOLESALE / BULK
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('wholesale','bulk','resell','reseller','retailer','business order','shop owner','corporate','company order','bulk price','volume discount','quantity discount')){
+    kiaatyAddMessage('bot',`We love working with businesses! 🏪<br><br>
+Kiaat Technologies offers <b>competitive wholesale pricing</b> for:<br>
+• Retail and shop owners<br>
+• Corporate / company purchases<br>
+• Event and office setups<br>
+• Government and institutional bulk orders<br><br>
+💡 <b>How it works:</b><br>
+1. Send us your list of items + quantities via WhatsApp<br>
+2. We respond with a customised quote within hours<br>
+3. Agree on price, confirm order and we deliver<br><br>
+There's no minimum order — whether it's 5 units or 500, we'll find the right deal for you.`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I\'d like a wholesale/bulk pricing quote from Kiaat Technologies. Here\'s what I need: ','Request a Wholesale Quote'));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 8. DEALS & DISCOUNTS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('deal','sale','discount','promo','offer','special offer','% off','price cut','markdown','clearance','flash sale','best price','cheapest','affordable','budget')){
+    const saleProds = products.filter(p=>p.oldPrice).sort((a,b)=>((b.oldPrice-b.price)/b.oldPrice)-((a.oldPrice-a.price)/a.oldPrice)).slice(0,2);
+    kiaatyAddMessage('bot',`🔥 We currently have <b>up to 40% OFF</b> on selected products — including TVs, phones, appliances and smart home devices!<br><br>
+All sale items are <b>100% genuine</b> with <b>full warranty</b> — discounts never affect product quality or warranty coverage.<br><br>
+Here are our top discounted picks right now:`);
+    kiaatyAddMessage('bot', saleProds.map(p=>`
+      <div class="kiaaty-rec-card">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="kiaaty-rec-card-info">
+          <h6>${p.name}</h6>
+          <span>${productPrice(p)}</span>
+        </div>
+        <button onclick="toggleKiaaty();openQuickView(${p.id})">View</button>
+      </div>`).join(''));
+    kiaatyAddMessage('bot',`👉 ${link('deals.html','See all deals on the Deals page →')}`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 9. PRODUCT CATEGORIES
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('what do you sell','product','categories','what products','range','stock','inventory','what can i buy','what do you have','show me everything','browse','catalogue')){
+    kiaatyAddMessage('bot',`We sell a wide range of quality technology and home products across 4 categories 🛍️:<br><br>
+📱 <b>Electronics</b> — Smartphones, Laptops, Tablets, Accessories <br>${link('electronics.html','Browse Electronics →')}<br><br>
+🏠 <b>Home Appliances</b> — Fridges, ACs, Washing Machines, Microwaves <br>${link('appliances.html','Browse Appliances →')}<br><br>
+🎮 <b>Entertainment</b> — Smart TVs, Soundbars, Gaming Consoles <br>${link('electronics.html#entertainment','Browse Entertainment →')}<br><br>
+🏡 <b>Smart Home</b> — Smart Bulbs, CCTV, WiFi Routers, Smart Locks <br>${link('electronics.html#smart','Browse Smart Home →')}`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 10. SPECIFIC PRODUCT CATEGORIES
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('smart tv','television','tv ',' tv','4k tv','uhd tv','hisense tv','samsung tv','lg tv','flat screen')){
+    kiaatyAddMessage('bot',`We carry a great range of <b>Smart TVs</b> 📺 — from compact 43" bedroom TVs to large 55" 4K displays, from brands like Samsung and Hisense.<br><br>Here are our top picks:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Smart TVs', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html#entertainment','View all Smart TVs →')}`);
+    return;
+  }
+
+  if(has('laptop','notebook','hp laptop','dell laptop','lenovo','macbook','computer','pc ',' pc')){
+    kiaatyAddMessage('bot',`We stock a solid range of <b>laptops</b> 💻 from trusted brands like HP and Dell — ideal for work, study, or everyday use. All come with manufacturer warranty.<br><br>Here are our top picks:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Laptops', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html','View all Laptops →')}`);
+    return;
+  }
+
+  if(has('smartphone','phone','mobile phone','iphone','samsung phone','tecno','infinix','android','galaxy')){
+    kiaatyAddMessage('bot',`We carry popular <b>smartphones</b> 📱 including Samsung, Tecno, Infinix and more — across all budgets, from entry-level to flagship.<br><br>Our top sellers:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Smartphones', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html','View all Smartphones →')}`);
+    return;
+  }
+
+  if(has('tablet','ipad','android tablet')){
+    kiaatyAddMessage('bot',`We stock quality <b>tablets</b> 📲 including the iPad — perfect for school, work, and entertainment.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Tablets', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html','View all Tablets →')}`);
+    return;
+  }
+
+  if(has('earbuds','earphone','headphone','anker','wireless earphone','airpods','headset','bluetooth earbuds')){
+    kiaatyAddMessage('bot',`We carry <b>wireless earbuds & headphones</b> 🎧 from trusted brands like Anker Soundcore — great sound, long battery life, and a comfortable fit.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Accessories', 3));
+    return;
+  }
+
+  if(has('accessory','accessories','cable','charger','case','cover','mouse','keyboard')){
+    kiaatyAddMessage('bot',`We stock a range of <b>accessories</b> including earbuds, headphones, and more to complement your devices.<br><br>Popular accessories:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Accessories', 3));
+    return;
+  }
+
+  if(has('fridge','refrigerator','freezer','double door','single door','chest freezer','lg fridge','samsung fridge','hisense fridge','350l','120l')){
+    kiaatyAddMessage('bot',`We have a great range of <b>refrigerators</b> 🧊 — from compact single-door 120L units to large 350L double-door models. All with smart inverter technology built for Ghana's power conditions.<br><br>Top picks:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Refrigerators', 3));
+    kiaatyAddMessage('bot',`👉 ${link('appliances.html#fridges','View all Refrigerators →')}`);
+    return;
+  }
+
+  if(has('air conditioner','air con','ac unit','split ac','window ac','1.5hp','1hp','aircon','cooling','cool the room')){
+    kiaatyAddMessage('bot',`We carry reliable <b>air conditioners</b> ❄️ including split units and window units — energy-efficient models built for Ghana's climate.<br><br>Top picks:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Air Conditioners', 3));
+    kiaatyAddMessage('bot',`👉 ${link('appliances.html#ac','View all Air Conditioners →')}`);
+    return;
+  }
+
+  if(has('washing machine','washer','front load','top load','laundry machine','hisense washing','laundry','8kg')){
+    kiaatyAddMessage('bot',`We stock quality <b>washing machines</b> 🫧 with large capacity and multiple wash programs — gentle on all fabric types.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Washing Machines', 3));
+    kiaatyAddMessage('bot',`👉 ${link('appliances.html#washing','View all Washing Machines →')}`);
+    return;
+  }
+
+  if(has('microwave','oven','microwave oven','midea','digital microwave')){
+    kiaatyAddMessage('bot',`We have compact <b>microwave ovens</b> 🍲 with digital controls, multiple power levels and child safety lock — perfect for everyday cooking.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Microwaves', 3));
+    kiaatyAddMessage('bot',`👉 ${link('appliances.html#microwave','View all Microwaves →')}`);
+    return;
+  }
+
+  if(has('gaming','playstation','ps5','ps 5','xbox','game console','console','next gen','gaming console')){
+    kiaatyAddMessage('bot',`We have the latest <b>gaming consoles</b> 🎮 including PS5 and Xbox Series S — next-generation gaming with lightning-fast load times and stunning graphics.<br><br>Available consoles:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Gaming Consoles', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html#entertainment','View all Gaming Consoles →')}`);
+    return;
+  }
+
+  if(has('speaker','soundbar','sound system','jbl','bluetooth speaker','subwoofer','sony soundbar','partybox')){
+    kiaatyAddMessage('bot',`We stock powerful <b>sound systems</b> 🔊 including JBL Bluetooth speakers, Sony soundbars with wireless subwoofers and more — perfect for home entertainment or parties.<br><br>Top picks:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Sound Systems', 3));
+    return;
+  }
+
+  if(has('cctv','security camera','camera','hikvision','surveillance','ezviz','doorbell camera','video doorbell','night vision')){
+    kiaatyAddMessage('bot',`We carry quality <b>security cameras & CCTV systems</b> 📷 including Hikvision 4-channel kits and Ezviz smart video doorbells — with night vision and remote mobile monitoring.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='CCTV Cameras', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html#smart','View all Security Cameras →')}`);
+    return;
+  }
+
+  if(has('wifi','router','internet','tp-link','mesh','wifi 6','deco','network','broadband','wireless internet')){
+    kiaatyAddMessage('bot',`We carry fast, reliable <b>WiFi routers</b> 📡 including TP-Link WiFi 6 routers and Deco mesh systems — covering small apartments to large homes with zero dead zones.<br><br>Top picks:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='WiFi Routers', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html#smart','View all WiFi Routers →')}`);
+    return;
+  }
+
+  if(has('smart bulb','smart light','philips bulb','led bulb','colour bulb','color bulb','smart home light','voice control light')){
+    kiaatyAddMessage('bot',`We have <b>smart WiFi LED bulbs</b> 💡 — control your lighting from anywhere, change colours, set schedules, and even use voice commands with Alexa or Google Home.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Smart Bulbs', 3));
+    return;
+  }
+
+  if(has('smart lock','door lock','yale lock','digital lock','keyless','smart door')){
+    kiaatyAddMessage('bot',`We carry <b>smart digital door locks</b> 🔐 from Yale — unlock with a PIN, smart card or backup key. Easy retrofit installation, no technician needed.<br><br>Available options:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Smart Locks', 3));
+    return;
+  }
+
+  if(has('smart home','home automation','smart device','automate','control from phone','smart setup')){
+    kiaatyAddMessage('bot',`We have everything you need to make your home <b>smarter</b> 🏡:<br><br>
+💡 <b>Smart Bulbs</b> — app-controlled lighting with 16M colours<br>
+📷 <b>CCTV Cameras</b> — HD security with remote monitoring<br>
+📡 <b>WiFi Routers & Mesh Systems</b> — fast whole-home coverage<br>
+🔐 <b>Smart Door Locks</b> — keyless entry via PIN or card<br>
+🔔 <b>Smart Video Doorbells</b> — see who's at your door from anywhere<br><br>
+All easy to set up and control from your smartphone!`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.cat==='smart', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html#smart','View all Smart Home Products →')}`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 11. SPECIFIC PRODUCT LOOKUPS BY NAME
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('samsung 55','55 inch','55"','uhd 4k','crystal uhd')){
+    const p = findProduct('Samsung 55');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is one of our best-selling TVs! 📺<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('lg 350','lg fridge','lg refrigerator','350l')){
+    const p = findProduct('LG 350');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is a customer favourite! 🧊<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('hp pavilion','hp laptop','pavilion 15','core i5 laptop')){
+    const p = findProduct('HP Pavilion');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is one of our most popular laptops! 💻<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('galaxy a55','samsung a55','a55 5g','samsung galaxy')){
+    const p = findProduct('Galaxy A55');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — premium mid-range 5G! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('playstation 5','ps5','playstation5')){
+    const p = findProduct('PlayStation 5');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — next-gen gaming at its finest! 🎮<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>`)}<br><br>⚡ Stock is very limited — only ${p.stock} units left!`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('xbox series s','xbox series','xbox s','series s')){
+    const p = findProduct('Xbox Series S');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — compact gaming powerhouse! 🎮<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('jbl partybox','partybox 110','jbl 110','partybox')){
+    const p = findProduct('JBL Partybox');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — the life of every party! 🎉<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('ipad','ipad 10','10th gen ipad','apple tablet')){
+    const p = findProduct('iPad');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — Apple quality at its best! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('tecno spark','spark 20','tecno spark 20')){
+    const p = findProduct('Tecno Spark 20');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — great value smartphone! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('anker soundcore','soundcore','anker earbuds','wireless earbud')){
+    const p = findProduct('Anker Soundcore');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — incredible value wireless earbuds! 🎧<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('dell inspiron','dell laptop','inspiron 15','core i3 laptop')){
+    const p = findProduct('Dell Inspiron');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — reliable everyday laptop! 💻<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('hikvision','hikvi','4 channel cctv','4channel')){
+    const p = findProduct('Hikvision');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — professional home security! 📷<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('tp-link archer','archer ax55','wifi 6 router','ax55')){
+    const p = findProduct('Archer AX55');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — blazing WiFi 6 speeds! 📡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('philips smart','philips bulb','philips led','smart bulb','4 pack bulb','4-pack')){
+    const p = findProduct('Philips Smart');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — smart lighting made easy! 💡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('yale smart','yale lock','digital door lock','smart door lock')){
+    const p = findProduct('Yale Smart');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — keyless security for your home! 🔐<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('ezviz','video doorbell','smart doorbell','ezviz doorbell')){
+    const p = findProduct('Ezviz');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — see who's at your door from anywhere! 🔔<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('deco mesh','tp-link deco','mesh wifi','wifi mesh','mesh system')){
+    const p = findProduct('Deco Mesh');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — whole-home WiFi coverage! 📡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('hisense 43','43 inch','43"','hisense fhd')){
+    const p = findProduct('Hisense 43');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — perfect for bedrooms! 📺<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('midea microwave','20l microwave','digital microwave')){
+    const p = findProduct('Midea');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — quick and convenient cooking! 🍲<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('bruhm','window ac','1hp ac','window unit')){
+    const p = findProduct('Bruhm');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — compact and reliable cooling! ❄️<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+  if(has('sony soundbar','2.1 soundbar','soundbar with subwoofer')){
+    const p = findProduct('Sony 2.1');
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — cinematic sound at home! 🔊<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 12. PRICE QUERIES
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('how much','price','cost','how much is','how much does','what does it cost','cheapest','most expensive','price range','price list','pricing')){
+    const cheapest = [...products].sort((a,b)=>a.price-b.price)[0];
+    const expensive = [...products].sort((a,b)=>b.price-a.price)[0];
+    kiaatyAddMessage('bot',`Our prices range from <b>${GHS(cheapest.price)}</b> (${cheapest.name}) all the way up to <b>${GHS(expensive.price)}</b> (${expensive.name}).<br><br>
+💡 To get the exact price of a specific product, just tell me its name and I'll pull it up instantly! Or browse our pages:<br><br>
+📱 ${link('electronics.html','Electronics prices →')}<br>
+🏠 ${link('appliances.html','Appliance prices →')}<br>
+🔥 ${link('deals.html','Deals & discounted prices →')}`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 13. BRANDS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('brand','brands','which brand','what brand','samsung','lg','sony','hisense','hp','dell','tecno','infinix','anker','jbl','yale','hikvision','tp-link','philips','midea','bruhm','ezviz')){
+    kiaatyAddMessage('bot',`We carry <b>20+ trusted global brands</b> including:<br><br>
+📱 <b>Electronics:</b> Samsung, HP, Dell, Tecno, Infinix, Anker, Apple<br>
+📺 <b>Entertainment:</b> Samsung, Hisense, Sony, JBL, Microsoft (Xbox)<br>
+🏠 <b>Appliances:</b> LG, Hisense, Bruhm, Midea<br>
+🏡 <b>Smart Home:</b> Philips, Hikvision, Ezviz, TP-Link, Yale<br><br>
+All products are <b>100% genuine</b> and sourced directly from authorized distributors.`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 14. HOW TO ORDER / SHOPPING GUIDE
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('how to order','how to buy','how to shop','how to purchase','place an order','checkout process','how does it work','ordering process','steps to buy','buying process')){
+    kiaatyAddMessage('bot',`Ordering from Kiaat Technologies is simple! Here's how 🛒:<br><br>
+<b>Step 1:</b> Browse our products on the website or ask me for a recommendation<br>
+<b>Step 2:</b> Click <b>"Add to Cart"</b> or use <b>"Quick View"</b> on any product<br>
+<b>Step 3:</b> Open your cart (bag icon top-right) and click <b>"Proceed to Checkout"</b><br>
+<b>Step 4:</b> Enter your <b>delivery details</b> (name, phone, region, address)<br>
+<b>Step 5:</b> Choose your <b>payment method</b> (MoMo, card, or cash on delivery)<br>
+<b>Step 6:</b> Review your order and click <b>"Place Order"</b><br>
+<b>Step 7:</b> 🎉 Done! We'll confirm and dispatch your order<br><br>
+You can also just call or WhatsApp us and we'll take the order manually!`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I\'d like to place an order with Kiaat Technologies.','Order via WhatsApp Instead'));
+    return;
+  }
+
+  if(has('add to cart','cart','shopping cart','my cart','view cart','remove from cart')){
+    kiaatyAddMessage('bot',`To manage your cart on our website:<br><br>
+🛍️ <b>Add items:</b> Click the <b>"Add to Cart"</b> button on any product<br>
+👁️ <b>Quick view:</b> Hover over a product and click "Quick View" to see details before adding<br>
+🛒 <b>View cart:</b> Click the <b>bag icon</b> in the top-right header<br>
+➕➖ <b>Change quantity:</b> Use the + / − buttons in the cart drawer<br>
+🗑️ <b>Remove items:</b> Click the trash icon next to any cart item<br>
+💳 <b>Checkout:</b> Click "Proceed to Checkout" in the cart drawer`);
+    return;
+  }
+
+  if(has('wishlist','save','save for later','favourite','favorite')){
+    kiaatyAddMessage('bot',`To save products for later:<br><br>
+❤️ Click the <b>heart icon</b> on any product card or in the Quick View popup<br>
+💛 View saved items by clicking the <b>heart icon</b> in the top-right header<br>
+🛒 You can <b>move wishlist items to cart</b> with one click when you're ready to buy<br><br>
+Your wishlist is saved during your browsing session!`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 15. WEBSITE NAVIGATION
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('page','pages','website','site','navigate','navigation','where to find','how to find','where is the','which page')){
+    kiaatyAddMessage('bot',`Here's a quick map of our website 🗺️:<br><br>
+🏠 ${link('index.html','Home')} — Featured products, deals, about us, FAQ<br>
+📱 ${link('electronics.html','Electronics')} — Phones, laptops, tablets, TVs, gaming, smart home<br>
+🏠 ${link('appliances.html','Appliances')} — Fridges, ACs, washing machines, microwaves<br>
+🔥 ${link('deals.html','Deals')} — All discounted products, up to 40% off<br>
+📞 ${link('contact.html','Contact')} — Reach us by phone, WhatsApp, email or form<br><br>
+You can also use the <b>🔍 search icon</b> in the top header to find any product instantly!`);
+    return;
+  }
+
+  if(has('search','find product','look for','how to search','search bar','search for')){
+    kiaatyAddMessage('bot',`To search for a product on our website:<br><br>
+🔍 Click the <b>magnifying glass icon</b> in the top-right header<br>
+⌨️ Type any product name, brand, or category<br>
+✅ Matching products appear instantly — click any result to open it<br><br>
+Or just tell me what you're looking for right here and I'll find it for you! 😊`);
+    return;
+  }
+
+  if(has('dark mode','light mode','theme','night mode','change colour','change color','appearance')){
+    kiaatyAddMessage('bot',`You can switch between <b>light and dark mode</b> 🌙☀️ on our website!<br><br>
+Look for the <b>moon/sun icon</b> floating on the right side of the screen (bottom-right area). Click it to toggle between light and dark themes. Your preference applies instantly across the whole page!`);
+    return;
+  }
+
+  if(has('newsletter','subscribe','email update','join newsletter','mailing list','notification')){
+    kiaatyAddMessage('bot',`You can subscribe to our newsletter at the <b>bottom of the homepage</b> 📬<br><br>
+Benefits of subscribing:<br>
+✅ <b>Early access</b> to sales and flash offers<br>
+✅ <b>New arrival</b> alerts<br>
+✅ <b>Restock notifications</b> on popular items<br>
+✅ <b>Exclusive subscriber-only deals</b><br><br>
+Just enter your email in the newsletter box at the bottom of ${link('index.html','the homepage →')}`);
+    return;
+  }
+
+  if(has('blog','article','guide','tip','buying guide','tech tip','review','read')){
+    kiaatyAddMessage('bot',`We have a <b>Kiaat Blog</b> with helpful content for shoppers 📝:<br><br>
+📺 Best Smart TVs in Ghana for 2026 — A Complete Buyer's Guide<br>
+⚡ 7 Energy-Saving Appliances That Cut Your Electricity Bill<br>
+💻 How To Choose The Right Laptop For Work, School Or Gaming<br>
+🏡 Smart Home Trends Every Ghanaian Household Should Know<br><br>
+Find the blog section on the ${link('index.html','homepage →')}`);
+    return;
+  }
+
+  if(has('faq','frequently asked','common question')){
+    kiaatyAddMessage('bot',`We have a <b>FAQ section</b> on our website covering the most common questions! 📋<br><br>
+Topics covered:<br>
+📦 Delivery timelines and fees<br>
+💳 Payment methods<br>
+🛡️ Product warranty<br>
+🔄 Returns and exchanges<br>
+🏪 Wholesale pricing<br>
+📍 Order tracking<br><br>
+Find it on the ${link('index.html#faq','homepage')} or ${link('contact.html','contact page →')}`);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 16. CAREERS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('job','career','hiring','vacancy','work at kiaat','join your team','employment','internship','apply')){
+    kiaatyAddMessage('bot',`Interested in joining the Kiaat Technologies team? We'd love to hear from you! 🙌<br><br>
+We're always looking for passionate, talented people to grow with us. To enquire about available positions or send your CV, please reach out directly:<br><br>
+📧 <b>Email:</b> kiaattechnologies@gmail.com (Subject: Job Application)<br>
+💬 <b>WhatsApp:</b> +233 552 195 047`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi, I\'m interested in a career opportunity at Kiaat Technologies.','Enquire About Jobs'));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 17. ENERGY / POWER QUESTIONS (common in Ghana)
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('inverter','energy saving','electricity','power cut','dumsor','generator','unstable power','stabiliser','energy efficient','low power')){
+    kiaatyAddMessage('bot',`Great question — we know power reliability matters in Ghana! 🔌<br><br>
+We specifically stock <b>inverter models</b> for refrigerators and air conditioners. Here's why they matter:<br><br>
+⚡ <b>Inverter compressors</b> use up to 40% less electricity than standard models<br>
+🔋 They handle <b>voltage fluctuations</b> better — great for generator use<br>
+🔇 They run <b>quieter</b> and last longer<br>
+💸 They save you money on your <b>ECG/NEDCO bills</b><br><br>
+Look for the <b>"Smart Inverter"</b> tag on our fridges and ACs. I can help you find the right energy-efficient model!`);
+    kiaatyShowQuickReplies(['🧊 Inverter Fridges','❄️ Inverter ACs','💬 Talk to an expert']);
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 18. PRODUCT COMPARISONS / RECOMMENDATIONS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('recommend','suggest','best','which one','what should i buy','help me choose','best for','good for','compare','vs ','versus','difference between')){
+    kiaatyAddMessage('bot',`I'd love to help you choose the right product! 🎯<br><br>
+To give you the best recommendation, could you tell me:<br>
+1️⃣ <b>What product type</b> are you looking for? (e.g. TV, fridge, phone)<br>
+2️⃣ <b>Your budget</b>? (rough range is fine)<br>
+3️⃣ <b>Main use case</b>? (e.g. family use, office, bedroom, gifts)<br><br>
+Or pick a category and I'll show you our top-rated options!`);
+    kiaatyShowQuickReplies(['📺 Best TVs','💻 Best Laptops','📱 Best Phones','🧊 Best Fridges','🎮 Best Gaming']);
+    return;
+  }
+
+  if(has('best tv','top tv','best television','top rated tv')){
+    kiaatyAddMessage('bot',`Here are our <b>best-selling Smart TVs</b> right now, sorted by customer rating ⭐:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Smart TVs', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html#entertainment','View all Smart TVs →')}`);
+    return;
+  }
+  if(has('best laptop','top laptop')){
+    kiaatyAddMessage('bot',`Here are our <b>top-rated laptops</b> ⭐:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Laptops', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html','View all Laptops →')}`);
+    return;
+  }
+  if(has('best phone','top phone','best smartphone','top smartphone')){
+    kiaatyAddMessage('bot',`Here are our <b>best-selling smartphones</b> ⭐:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Smartphones', 3));
+    kiaatyAddMessage('bot',`👉 ${link('electronics.html','View all Phones →')}`);
+    return;
+  }
+  if(has('best fridge','top fridge','best refrigerator')){
+    kiaatyAddMessage('bot',`Here are our <b>top-rated refrigerators</b> ⭐:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Refrigerators', 3));
+    kiaatyAddMessage('bot',`👉 ${link('appliances.html#fridges','View all Refrigerators →')}`);
+    return;
+  }
+  if(has('best gaming','top gaming console','best console')){
+    kiaatyAddMessage('bot',`Here are our <b>top gaming consoles</b> ⭐:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.catLabel==='Gaming Consoles', 3));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 19. GIFT IDEAS
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('gift','present','birthday','christmas','valentine','surprise','for my wife','for my husband','for my mum','for my dad','for my girlfriend','for my boyfriend','for someone','gift idea')){
+    kiaatyAddMessage('bot',`Looking for the perfect gift? 🎁 Great choice — tech gifts are always a hit! Here are some popular gift ideas across different budgets:<br><br>
+💰 <b>Under ₵500:</b> Smart Bulb 4-Pack (₵289), Anker Earbuds (₵459)<br>
+💰 <b>₵500–₵2,000:</b> Smart Doorbell (₵749), WiFi Router (₵899), Soundbar (₵1,599)<br>
+💰 <b>₵2,000–₵4,000:</b> CCTV Kit (₵1,899), Hisense TV (₵2,899), Air Conditioner (₵3,199)<br>
+💰 <b>₵4,000+:</b> Laptops, Samsung Galaxy A55, Refrigerators, PS5/Xbox<br><br>
+Tell me your <b>budget</b> and who it's for and I'll narrow it down even further!`);
+    kiaatyShowQuickReplies(['🎁 Under ₵500','🎁 ₵500–₵2000','🎁 ₵2000–₵4000','🎁 ₵4000+']);
+    return;
+  }
+
+  if(has('under ₵500','under 500','less than 500','budget under','cheap gift','affordable gift')){
+    kiaatyAddMessage('bot',`Great picks under <b>₵500</b> 🎁:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.price<500, 3));
+    return;
+  }
+  if(has('under ₵2000','under 2000','₵500–₵2000','500 to 2000','between 500 and 2000')){
+    kiaatyAddMessage('bot',`Popular picks between <b>₵500 and ₵2,000</b> 🎁:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.price>=500&&p.price<=2000, 3));
+    return;
+  }
+  if(has('under ₵4000','under 4000','₵2000–₵4000','2000 to 4000')){
+    kiaatyAddMessage('bot',`Great options between <b>₵2,000 and ₵4,000</b> 🎁:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.price>=2000&&p.price<=4000, 3));
+    return;
+  }
+  if(has('over ₵4000','above 4000','₵4000+','premium','high end','flagship','top of the range')){
+    kiaatyAddMessage('bot',`Our premium options above <b>₵4,000</b> 💎:`);
+    kiaatyAddMessage('bot', kiaatyRec(p=>p.price>=4000, 3));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 20. TALK TO HUMAN
+  // ─────────────────────────────────────────────────────────────────────────
+  if(has('talk to human','real person','agent','representative','customer service','speak to someone','connect me','live chat','live support','not a bot')){
+    kiaatyAddMessage('bot',`Absolutely! Our human team is available and happy to help 🙋‍♂️<br><br>
+The fastest way to reach a real person is via <b>WhatsApp</b> — typical response time is under 5 minutes during business hours (Mon–Sat, 8am–7pm).<br><br>
+You can also:<br>
+📞 <b>Call us:</b> +233 552 195 047<br>
+📧 <b>Email:</b> kiaattechnologies@gmail.com<br>
+📝 ${link('contact.html','Fill in our contact form →')}`);
+    kiaatyAddMessage('bot', kiaatyWa('Hi! I\'d like to speak with a member of the Kiaat Technologies team.','Connect With Our Team'));
+    return;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 21. GENERAL FALLBACK
+  // ─────────────────────────────────────────────────────────────────────────
+  kiaatyAddMessage('bot',`Hmm, I want to make sure I give you the right answer! 🤔 Could you rephrase that or choose one of the options below? I know everything about Kiaat Technologies — products, prices, delivery, payments, warranty, returns, brands and more!`);
+  kiaatyShowQuickReplies(['🛍️ What do you sell?','💰 Today\'s deals','🚚 Delivery info','📞 Contact the team','💳 Payment methods','🛡️ Warranty & returns']);
 }
