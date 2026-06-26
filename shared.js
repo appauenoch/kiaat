@@ -206,7 +206,7 @@ function openQuickView(id){
       <div class="prod-price"><span class="price-now">${GHS(p.price)}</span>${p.oldPrice?`<span class="price-old">${GHS(p.oldPrice)}</span><span class="price-off">-${off}%</span>`:''}</div>
       ${stockLine(p)}
       <p class="qv-desc">${p.desc}</p>
-      <ul class="qv-feat">${p.features.map(f=>`<li><i class="fa-solid fa-circle-check"></i>${f}</li>`).join('')}</ul>
+      <ul class="qv-feat">${p.features.map(f=>'<li><i class="fa-solid fa-circle-check"></i>'+f+'</li>').join('')}</ul>
       <div class="qv-actions">
         <button class="add-cart-btn" onclick="addToCart(${p.id},this)"><i class="fa-solid fa-bag-shopping"></i> Add to Cart</button>
         <button class="wish-btn ${isWished?'active':''}" onclick="toggleWishlist(${p.id},this)"><i class="fa-${isWished?'solid':'regular'} fa-heart"></i></button>
@@ -494,7 +494,7 @@ function renderCheckout(){
   } else if(checkoutState.step===2){
     const p=checkoutState.payment;
     let sub='';
-    if(p.method==='momo') sub=`<div class="pay-sub-fields single"><div class="co-form-group full"><label>Network</label><div class="network-pills">${MOMO_NETWORKS.map(n=>`<span class="network-pill ${p.network===n?'selected':''}" onclick="event.stopPropagation();checkoutState.payment.network='${n}';renderCheckout()">${n}</span>`).join('')}</div></div><div class="co-form-group full" id="fg-mobileNumber"><label>Mobile Money Number</label><input type="tel" value="${p.mobileNumber}" placeholder="+233 XX XXX XXXX" onclick="event.stopPropagation()" oninput="checkoutState.payment.mobileNumber=this.value"><span class="co-error">Please enter your MoMo number</span></div></div>`;
+    if(p.method==='momo') sub='<div class="pay-sub-fields single"><div class="co-form-group full"><label>Network</label><div class="network-pills">'+MOMO_NETWORKS.map(n=>'<span class="network-pill '+(p.network===n?'selected':'')+'" onclick="event.stopPropagation();checkoutState.payment.network=\''+n+'\';renderCheckout()">'+n+'</span>').join('')+'</div></div><div class="co-form-group full" id="fg-mobileNumber"><label>Mobile Money Number</label><input type="tel" value="'+p.mobileNumber+'" placeholder="+233 XX XXX XXXX" onclick="event.stopPropagation()" oninput="checkoutState.payment.mobileNumber=this.value"><span class="co-error">Please enter your MoMo number</span></div></div>';
     else if(p.method==='card') sub=`<div class="pay-sub-fields" onclick="event.stopPropagation()"><div class="co-form-group full" id="fg-cardName"><label>Name on Card</label><input type="text" value="${p.cardName}" placeholder="As shown on card" oninput="checkoutState.payment.cardName=this.value"><span class="co-error">Required</span></div><div class="co-form-group full" id="fg-cardNumber"><label>Card Number</label><input type="text" value="${p.cardNumber}" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="let v=this.value.replace(/\\D/g,'').slice(0,16);v=v.replace(/(.{4})/g,'$1 ').trim();this.value=v;checkoutState.payment.cardNumber=v;"><span class="co-error">Please enter a valid card number</span></div><div class="co-form-group" id="fg-cardExpiry"><label>Expiry</label><input type="text" value="${p.cardExpiry}" placeholder="MM/YY" maxlength="5" oninput="let v=this.value.replace(/\\D/g,'').slice(0,4);if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);this.value=v;checkoutState.payment.cardExpiry=v;"><span class="co-error">Required</span></div><div class="co-form-group" id="fg-cardCVV"><label>CVV</label><input type="text" value="${p.cardCVV}" placeholder="•••" maxlength="4" oninput="checkoutState.payment.cardCVV=this.value"><span class="co-error">Required</span></div></div>`;
     else sub=`<p style="font-size:13px;color:var(--text-soft);margin-top:12px;">Pay in cash to our delivery rider when your order arrives.</p>`;
     body.innerHTML=`<div class="checkout-panel">
@@ -1084,87 +1084,87 @@ All easy to set up and control from your smartphone!`);
   // ─────────────────────────────────────────────────────────────────────────
   if(has('samsung 55','55 inch','55"','uhd 4k','crystal uhd')){
     const p = findProduct('Samsung 55');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is one of our best-selling TVs! 📺<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is one of our best-selling TVs! 📺<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('lg 350','lg fridge','lg refrigerator','350l')){
     const p = findProduct('LG 350');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is a customer favourite! 🧊<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is a customer favourite! 🧊<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('hp pavilion','hp laptop','pavilion 15','core i5 laptop')){
     const p = findProduct('HP Pavilion');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is one of our most popular laptops! 💻<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> is one of our most popular laptops! 💻<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('galaxy a55','samsung a55','a55 5g','samsung galaxy')){
     const p = findProduct('Galaxy A55');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — premium mid-range 5G! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — premium mid-range 5G! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('playstation 5','ps5','playstation5')){
     const p = findProduct('PlayStation 5');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — next-gen gaming at its finest! 🎮<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>`)}<br><br>⚡ Stock is very limited — only ${p.stock} units left!`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — next-gen gaming at its finest! 🎮<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}<br><br>⚡ Stock is very limited — only ${p.stock} units left!`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('xbox series s','xbox series','xbox s','series s')){
     const p = findProduct('Xbox Series S');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — compact gaming powerhouse! 🎮<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — compact gaming powerhouse! 🎮<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('jbl partybox','partybox 110','jbl 110','partybox')){
     const p = findProduct('JBL Partybox');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — the life of every party! 🎉<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — the life of every party! 🎉<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('ipad','ipad 10','10th gen ipad','apple tablet')){
     const p = findProduct('iPad');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — Apple quality at its best! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — Apple quality at its best! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('tecno spark','spark 20','tecno spark 20')){
     const p = findProduct('Tecno Spark 20');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — great value smartphone! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — great value smartphone! 📱<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('anker soundcore','soundcore','anker earbuds','wireless earbud')){
     const p = findProduct('Anker Soundcore');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — incredible value wireless earbuds! 🎧<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — incredible value wireless earbuds! 🎧<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('dell inspiron','dell laptop','inspiron 15','core i3 laptop')){
     const p = findProduct('Dell Inspiron');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — reliable everyday laptop! 💻<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — reliable everyday laptop! 💻<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('hikvision','hikvi','4 channel cctv','4channel')){
     const p = findProduct('Hikvision');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — professional home security! 📷<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — professional home security! 📷<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('tp-link archer','archer ax55','wifi 6 router','ax55')){
     const p = findProduct('Archer AX55');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — blazing WiFi 6 speeds! 📡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — blazing WiFi 6 speeds! 📡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('philips smart','philips bulb','philips led','smart bulb','4 pack bulb','4-pack')){
     const p = findProduct('Philips Smart');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — smart lighting made easy! 💡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — smart lighting made easy! 💡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('yale smart','yale lock','digital door lock','smart door lock')){
     const p = findProduct('Yale Smart');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — keyless security for your home! 🔐<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — keyless security for your home! 🔐<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('ezviz','video doorbell','smart doorbell','ezviz doorbell')){
     const p = findProduct('Ezviz');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — see who's at your door from anywhere! 🔔<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — see who's at your door from anywhere! 🔔<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('deco mesh','tp-link deco','mesh wifi','wifi mesh','mesh system')){
     const p = findProduct('Deco Mesh');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — whole-home WiFi coverage! 📡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — whole-home WiFi coverage! 📡<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('hisense 43','43 inch','43"','hisense fhd')){
     const p = findProduct('Hisense 43');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — perfect for bedrooms! 📺<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — perfect for bedrooms! 📺<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('midea microwave','20l microwave','digital microwave')){
     const p = findProduct('Midea');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — quick and convenient cooking! 🍲<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — quick and convenient cooking! 🍲<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('bruhm','window ac','1hp ac','window unit')){
     const p = findProduct('Bruhm');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — compact and reliable cooling! ❄️<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — compact and reliable cooling! ❄️<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
   if(has('sony soundbar','2.1 soundbar','soundbar with subwoofer')){
     const p = findProduct('Sony 2.1');
-    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — cinematic sound at home! 🔊<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>`✅ ${f}`).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
+    if(p){ kiaatyAddMessage('bot',`The <b>${p.name}</b> — cinematic sound at home! 🔊<br><br>💰 Price: ${productPrice(p)}<br>⭐ Rating: ${p.rating}/5 (${p.reviews} reviews)<br>${stockText(p)}<br><br>${p.features.map(f=>'✅ '+f).join('<br>')}`); kiaatyAddMessage('bot', kiaatyRec(pp=>pp.id===p.id, 1)); } return;
   }
 
   // ─────────────────────────────────────────────────────────────────────────
